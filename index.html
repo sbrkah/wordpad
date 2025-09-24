@@ -24,8 +24,14 @@
                 <span>Wordpad</span>
             </div>
             <div class="topbar-menu">
-                <span><i class="fa-solid fa-chart-simple"></i></span>
-                <span><i class="fa-solid fa-share-nodes"></i></span>
+                <div class="has-popup">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <div class="popup-content">Skor terbaikmu!</div>
+                </div>
+                <div class="has-popup">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <div class="popup-content">Menyukai Wordpad? Bagikan pada teman!</div>
+                </div>
                 <div class="score-container">
                     <span><i class="fa-solid fa-feather-pointed"></i> <span id="score">0</span></span>
                 </div>
@@ -109,6 +115,47 @@
         </div>
         <div id="notify-container" class="">
             <span id="nmessage">Semoga berungga!</span>
+        </div>
+        <div id="score-container">
+            <div class="score-tittle">
+                <i class="fa-solid fa-chart-simple"></i>
+                Rekor Saya
+            </div>
+            <div class="score-subtitle">
+                <span>Kau dewa kata?! Lihat seberapa hebat rekormu di sini — mulai dari skor, jumlah kata dan lainnya.</span>
+            </div>
+            <div id="record-content">
+                <div class="record-item">
+                    <div class="record-item-container">
+                        <div class="record-item-point">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                            <h2 class="scored">134</h2>
+                        </div>
+                        <div class="record-item-word">
+                            Menemukan
+                            <span class="worded total">52</span>
+                            <span class="worded">kata</span>
+                        </div>
+                    </div>
+                    <div class="record-item-detail">
+                        <span class="dated">Sabtu, 28 Agystus 2022</span>
+                        <div class="numpad-item-container">
+                            <div class="numpad-item main">N</div>
+                            <div class="numpad-item">F</div>
+                            <div class="numpad-item">A</div>
+                            <div class="numpad-item">S</div>
+                            <div class="numpad-item">K</div>
+                            <div class="numpad-item">W</div>
+                            <div class="numpad-item">B</div>
+                            <div class="numpad-item">P</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="score-footer">
+                <span>*hanya menyimpan rekor game harian</span>
+                <div id="score-close">Tutup</div>
+            </div>
         </div>
     </div>
     <div class="main-container fit">
