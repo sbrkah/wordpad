@@ -89,6 +89,10 @@ let mainNumpadElement = document.querySelector(".numpad.main");
 let notifyElement = document.getElementById("notify-container");
 let nmessageElement = document.getElementById("nmessage");
 let wordListElement = document.getElementById("word-content");
+let scoreBtnElement = document.getElementById("score-btn");
+let shareBtnElement = document.getElementById("share-btn");
+let scoreCloseElement = document.getElementById("score-close");
+let scoreContainerElement = document.getElementById("score-container");
 
 function prepareLetter(_letterList = letterList) {
     let _letterArray = letterList.split("");
@@ -245,3 +249,19 @@ function saveToLocalStorage(address = localStorageKey) {
 
 prepareLetter();
 loadLocalStorage();
+
+scoreBtnElement.onclick = () => {
+    scoreContainerElement.classList.toggle("show");
+};
+
+scoreCloseElement.onclick = () => {
+    scoreContainerElement.classList.remove("show");
+};
+
+window.addEventListener("click", (e) => {
+    if(scoreContainerElement.classList.contains("show")){
+        if(!scoreContainerElement.contains(e.target) && !scoreBtnElement.contains(e.target)){
+            scoreContainerElement.classList.remove("show");
+        }
+    }
+});

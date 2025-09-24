@@ -83,6 +83,7 @@ body {
 
 .has-popup:hover {
     position: relative;
+    cursor: pointer;
 }
 
 .has-popup:hover .popup-content {
@@ -210,9 +211,8 @@ body {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 60%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, 120%);
     padding: 15px 32px;
     background-color: #fff;
     color: var(var(--cblue-main));
@@ -223,6 +223,11 @@ body {
     height: 70vh;
     width: 80%;
     text-align: start;
+    transition: transform 0.238s ease;
+}
+
+#score-container.show{
+    transform: translate(-50%, -5%);
 }
 
 #score-container span{
