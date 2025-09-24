@@ -41,19 +41,20 @@ const namaLevel = [
 ];
 const scoreMultiplier = 1;
 const scoreLevel = [
-    8*scoreMultiplier,
-    14*scoreMultiplier,
-    28*scoreMultiplier,
-    62*scoreMultiplier,
-    100*scoreMultiplier,
-    120*scoreMultiplier,
+    22 * scoreMultiplier,
+    48 * scoreMultiplier,
+    78 * scoreMultiplier,
+    128 * scoreMultiplier,
+    198 * scoreMultiplier,
+    288 * scoreMultiplier,
 ];
+const todayDate = new Date().setHours(0, 0, 0, 0);
 const notifInterval = 2000;
 const localStorageKey = "wordpad-str-00-0.12";
 const bigWordList = await importWords("./list_1.0.0_nospace.txt");
 let score = 0;
-let mainLetter = "P";
-let letterList = "MKUTERS";
+let mainLetter = "G";
+let letterList = "ANYZIRM";
 let currentWord = "";
 let smallWorldList = bigWordList.filter((word) => {
     // Check if word includes center letter
@@ -93,6 +94,7 @@ let scoreBtnElement = document.getElementById("score-btn");
 let shareBtnElement = document.getElementById("share-btn");
 let scoreCloseElement = document.getElementById("score-close");
 let scoreContainerElement = document.getElementById("score-container");
+let recordElement = document.getElementById("record-content");
 
 function prepareLetter(_letterList = letterList) {
     let _letterArray = letterList.split("");
@@ -106,7 +108,7 @@ function prepareLetter(_letterList = letterList) {
     mainNumpadElement.setAttribute("data-letter", mainLetter);
 }
 
-function updateScore(point) {
+function updateScore(point, firstLoad = false) {
     score += point;
     const _lvlIndex = namaLevel.indexOf(levelNameElement.innerHTML);
     const _toNextLevel = scoreLevel[_lvlIndex];
@@ -127,7 +129,14 @@ function updateScore(point) {
     setTimeout(() => {
         scoreElement.innerHTML = score;
     }, notifInterval);
+
     saveToLocalStorage();
+
+    if(firstLoad == false) {
+        recordedPoint.todayRecord.point = score;
+        recordedPoint.todayRecord.wordFound = correctWordList;
+        recordedPoint.saveToLocalStorage();
+    }
 }
 
 function notifier(message, type = "info") {
@@ -222,8 +231,8 @@ allNumpadElement.forEach((numpad) => {
 function loadLocalStorage(address = localStorageKey) {
     if (localStorage.getItem(address)) {
         let { correctWordList, score, date } = JSON.parse(localStorage.getItem(address));
-        
-        if(new Date(date).getDate() !== new Date().getDate()) {
+
+        if (new Date(date).getDate() !== new Date().getDate()) {
             correctWordList = [];
             score = 0;
             saveToLocalStorage();
@@ -234,7 +243,7 @@ function loadLocalStorage(address = localStorageKey) {
             updateCorrectList(word);
         });
 
-        updateScore(score);
+        updateScore(score, true);
     }
 }
 
@@ -246,11 +255,96 @@ function saveToLocalStorage(address = localStorageKey) {
     }));
 }
 
+class recordedPoint {
+    static recordedPoints = [];
+    static todayRecord = null;
+
+    constructor(point, mainLetter, letterList, wordFound, date) {
+        this.point = point;
+        this.mainLetter = mainLetter;
+        this.letterList = letterList;
+        this.wordFound = wordFound;
+        this.date = new Date(date);
+    }
+
+    getComponent() {
+        return `
+            <div class="record-item">
+                <div class="record-item-container">
+                    <div class="record-item-point">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                        <h2 class="scored">${this.point}</h2>
+                    </div>
+                    <div class="record-item-word">
+                        Menemukan
+                        <span class="worded total">${this.wordFound.length}</span>
+                        <span class="worded">kata</span>
+                    </div>
+                </div>
+                <div class="record-item-detail">
+                    <span class="dated">${this.date.toDateString()}</span>
+                    <div class="numpad-item-container">
+                        <div class="numpad-item main">${this.mainLetter}</div>
+                        ${this.letterList.split("").map((item) => `<div class="numpad-item">${item}</div>`).join("")}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    static getAllComponent(){
+        console.log(this.todayRecord)
+        let _sortedList = this.recordedPoints.sort((a, b) => b.point - a.point);
+        let _top10 = _sortedList.slice(0, 10);
+
+        return _top10.map((item) => item.getComponent()).join("");
+    }
+
+    static storeClass(recordItem) {
+        this.recordedPoints.push(recordItem);
+        if(this.todayRecord === null && new Date(recordItem.date).setHours(0, 0, 0, 0) == todayDate) {
+            this.todayRecord = recordItem;
+        }
+    }
+
+    static store(point, mainLetter, letterList, wordFound, date) {
+        this.storeClass(new recordedPoint(point, mainLetter, letterList, wordFound, new Date(date)));
+    }
+
+    static saveToLocalStorage() {
+        localStorage.setItem(localStorageKey+"-record", JSON.stringify(this.recordedPoints));
+    }
+
+    static loadLocalStorage() {
+        if (localStorage.getItem(localStorageKey+"-record")) {
+            let _recordedPoints = JSON.parse(localStorage.getItem(localStorageKey+"-record"));
+            _recordedPoints.forEach((item) => {
+                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date);
+                this.storeClass(_lclass);
+
+                if(new Date(item.date).setHours(0, 0, 0, 0) == todayDate) {
+                    this.todayRecord = _lclass;
+                }
+            });
+        }
+    }
+
+    static getTodayRecord() {
+        return this.todayRecord;
+    }
+}
 
 prepareLetter();
 loadLocalStorage();
 
+recordedPoint.loadLocalStorage();
+
+if(recordedPoint.getTodayRecord() == null) {
+    recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate));
+}
+
 scoreBtnElement.onclick = () => {
+    recordElement.innerHTML = recordedPoint.getAllComponent();
     scoreContainerElement.classList.toggle("show");
 };
 
@@ -259,8 +353,8 @@ scoreCloseElement.onclick = () => {
 };
 
 window.addEventListener("click", (e) => {
-    if(scoreContainerElement.classList.contains("show")){
-        if(!scoreContainerElement.contains(e.target) && !scoreBtnElement.contains(e.target)){
+    if (scoreContainerElement.classList.contains("show")) {
+        if (!scoreContainerElement.contains(e.target) && !scoreBtnElement.contains(e.target)) {
             scoreContainerElement.classList.remove("show");
         }
     }
