@@ -50,7 +50,7 @@ const scoreLevel = [
 ];
 const todayDate = new Date().setHours(0, 0, 0, 0);
 const notifInterval = 2000;
-const localStorageKey = "wordpad-str-00-0.12";
+const localStorageKey = "wordpad-str-00-0.12-record";
 const bigWordList = await importWords("./list_1.0.0_nospace.txt");
 let score = 0;
 let mainLetter = "G";
@@ -129,8 +129,6 @@ function updateScore(point, firstLoad = false) {
     setTimeout(() => {
         scoreElement.innerHTML = score;
     }, notifInterval);
-
-    saveToLocalStorage();
 
     if(firstLoad == false) {
         recordedPoint.todayRecord.point = score;
@@ -228,33 +226,6 @@ allNumpadElement.forEach((numpad) => {
     numpad.addEventListener("click", handleNumpad);
 });
 
-function loadLocalStorage(address = localStorageKey) {
-    if (localStorage.getItem(address)) {
-        let { correctWordList, score, date } = JSON.parse(localStorage.getItem(address));
-
-        if (new Date(date).getDate() !== new Date().getDate()) {
-            correctWordList = [];
-            score = 0;
-            saveToLocalStorage();
-            return;
-        }
-
-        correctWordList.forEach((word) => {
-            updateCorrectList(word);
-        });
-
-        updateScore(score, true);
-    }
-}
-
-function saveToLocalStorage(address = localStorageKey) {
-    localStorage.setItem(address, JSON.stringify({
-        correctWordList: correctWordList,
-        score: score,
-        date: new Date()
-    }));
-}
-
 class recordedPoint {
     static recordedPoints = [];
     static todayRecord = null;
@@ -293,7 +264,6 @@ class recordedPoint {
     }
 
     static getAllComponent(){
-        console.log(this.todayRecord)
         let _sortedList = this.recordedPoints.sort((a, b) => b.point - a.point);
         let _top10 = _sortedList.slice(0, 10);
 
@@ -312,34 +282,32 @@ class recordedPoint {
     }
 
     static saveToLocalStorage() {
-        localStorage.setItem(localStorageKey+"-record", JSON.stringify(this.recordedPoints));
+        localStorage.setItem(localStorageKey, JSON.stringify(this.recordedPoints));
     }
 
     static loadLocalStorage() {
-        if (localStorage.getItem(localStorageKey+"-record")) {
-            let _recordedPoints = JSON.parse(localStorage.getItem(localStorageKey+"-record"));
+        if (localStorage.getItem(localStorageKey)) {
+            let _recordedPoints = JSON.parse(localStorage.getItem(localStorageKey));
             _recordedPoints.forEach((item) => {
                 let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date);
                 this.storeClass(_lclass);
 
                 if(new Date(item.date).setHours(0, 0, 0, 0) == todayDate) {
                     this.todayRecord = _lclass;
+                    updateScore(item.point, true);
+                    item.wordFound.forEach((word) => {
+                        updateCorrectList(word);
+                    });
                 }
             });
         }
     }
-
-    static getTodayRecord() {
-        return this.todayRecord;
-    }
 }
 
 prepareLetter();
-loadLocalStorage();
-
 recordedPoint.loadLocalStorage();
 
-if(recordedPoint.getTodayRecord() == null) {
+if(recordedPoint.todayRecord == null) {
     recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate));
 }
 
