@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="utils.js"></script>
+    <script type="module" src="index.js"></script>
+    <title>Wordpad - Menysun Kata!</title>
+</head>
+
+<body>
+    <div class="topbar-container">
+        <div id="progress-bar"></div>
+        <div class="topbar fit">
+            <div class="topbar-logo">
+                <img src="./assets/icon.png" alt="Wordpad Logo" />
+                <span>Wordpad</span>
+            </div>
+            <div class="topbar-menu">
+                <span><i class="fa-solid fa-chart-simple"></i></span>
+                <span><i class="fa-solid fa-share-nodes"></i></span>
+                <div class="score-container">
+                    <span><i class="fa-solid fa-feather-pointed"></i> <span id="score">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-container fit">
+        <div class="level-container">
+            <div class="level-bar-container">
+                <div class="bar-container">
+                    <div class="level-line"></div>
+                    <div class="level-bar-dots filled" id="level-1"></div>
+                    <div class="level-bar-dots" id="level-2"></div>
+                    <div class="level-bar-dots" id="level-3"></div>
+                    <div class="level-bar-dots" id="level-4"></div>
+                    <div class="level-bar-dots" id="level-5"></div>
+                    <div class="level-bar-dots" id="level-6"></div>
+                </div>
+                <span id="level-name">Pemula</span>
+            </div>
+        </div>
+        <!-- <div class="progress-container">
+            <div class="progress-bar">
+                <span class="p-dots filled" data-progress="1"></span>
+                <span class="p-dots filled" data-progress="2"></span>
+                <span class="p-dots filled" data-progress="3"></span>
+                <span class="p-dots filled" data-progress="4"></span>
+                <span class="p-dots filled" data-progress="5"></span>
+                <span class="p-dots filled" data-progress="6"></span>
+                <span class="p-dots filled" data-progress="7"></span>
+                <span class="p-dots filled" data-progress="8"></span>
+                <span class="p-dots filled" data-progress="9"></span>
+                <span class="p-dots filled" data-progress="10"></span>
+                <span class="p-dots filled" data-progress="11"></span>
+                <span class="p-dots filled" data-progress="12"></span>
+                <span class="p-dots filled" data-progress="13"></span>
+                <span class="p-dots filled" data-progress="14"></span>
+                <span class="p-dots filled" data-progress="15"></span>
+                <span class="p-dots filled" data-progress="16"></span>
+                <span class="p-dots filled" data-progress="17"></span>
+                <span class="p-dots filled" data-progress="18"></span>
+                <span class="p-dots filled" data-progress="19"></span>
+                <span class="p-dots filled" data-progress="20"></span>
+                <span class="p-dots filled" data-progress="21"></span>
+                <span class="p-dots filled" data-progress="22"></span>
+                <span class="p-dots" data-progress="23"></span>
+                <span class="p-dots" data-progress="24"></span>
+                <span class="p-dots" data-progress="25"></span>
+                <span class="p-dots" data-progress="26"></span>
+                <span class="p-dots" data-progress="27"></span>
+                <span class="p-dots" data-progress="28"></span>
+                <span class="p-dots" data-progress="29"></span>
+                <span class="p-dots" data-progress="30"></span>
+                <span class="p-dots" data-progress="31"></span>
+                <span class="p-dots" data-progress="32"></span>
+                <span class="p-dots" data-progress="33"></span>
+                <span class="p-dots" data-progress="34"></span>
+                <span class="p-dots" data-progress="35"></span>
+                <span class="p-dots" data-progress="36"></span>
+                <span class="p-dots" data-progress="37"></span>
+                <span class="p-dots" data-progress="38"></span>
+                <span class="p-dots" data-progress="39"></span>
+                <span class="p-dots" data-progress="40"></span>
+                <span class="p-dots" data-progress="41"></span>
+                <span class="p-dots" data-progress="42"></span>
+                <span class="p-dots" data-progress="43"></span>
+                <span class="p-dots" data-progress="44"></span>
+                <span class="p-dots" data-progress="45"></span>
+                <span class="p-dots" data-progress="46"></span>
+                <span class="p-dots" data-progress="47"></span>
+                <span class="p-dots" data-progress="48"></span>
+                <span class="p-dots" data-progress="49"></span>
+                <span class="p-dots" data-progress="50"></span>
+            </div>
+        </div> -->
+        <div class="word-container">
+            <div id="word-content">
+                <span>&nbsp</span>
+            </div>
+            <div class="the-end"></div>
+        </div>
+        <div id="notify-container" class="">
+            <span id="nmessage">Semoga berungga!</span>
+        </div>
+    </div>
+    <div class="main-container fit">
+        <div class="main-content">
+            <div class="keyboard-container">
+                <div id="entered-word"></div>
+                <div class="blinking-cursor"></div>
+            </div>
+            <div class="numpad-container">
+                <div class="numpad-column">
+                    <div class="numpad letter" data-letter="">T</div>
+                    <div class="numpad letter" data-letter="">E</div>
+                    <div class="numpad letter" data-letter="">S</div>
+                </div>
+                <div class="numpad-column">
+                    <div class="numpad letter" data-letter="">L</div>
+                    <div class="numpad letter main" data-letter="">P</div>
+                    <div class="numpad letter" data-letter="">A</div>
+                </div>
+                <div class="numpad-column">
+                    <div class="numpad letter" data-letter="">K</div>
+                    <div class="numpad letter" data-letter="">B</div>
+                    <div class="numpad control" id="delete-btn"><i class="fas fa-backspace"></i></div>
+                </div>
+                <div class="numpad-column">
+                    <div class="numpad control" id="shuffle-btn"><i class="fas fa-shuffle"></i></div>
+                    <div class="numpad control" id="submit-btn">Submit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-container fit">
+        <div class="footer-content">
+            Rangkai kata menggunakan huruf yang disediakan. Harus mengandung huruf utama yang berada di bagian
+            tengah. Berapa kata yang dapat kamu rangkai?!
+        </div>
+        <div id="version">
+            Wordpad v0.12
+        </div>
+    </div>
+</body>
+</html>
