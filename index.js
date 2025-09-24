@@ -230,11 +230,12 @@ class recordedPoint {
     static recordedPoints = [];
     static todayRecord = null;
 
-    constructor(point, mainLetter, letterList, wordFound, date) {
+    constructor(point, mainLetter, letterList, wordFound, date, levelName = "Pemulai") {
         this.point = point;
         this.mainLetter = mainLetter;
         this.letterList = letterList;
         this.wordFound = wordFound;
+        this.levelName = levelName;
         this.date = new Date(date);
     }
 
@@ -277,8 +278,8 @@ class recordedPoint {
         }
     }
 
-    static store(point, mainLetter, letterList, wordFound, date) {
-        this.storeClass(new recordedPoint(point, mainLetter, letterList, wordFound, new Date(date)));
+    static store(point, mainLetter, letterList, wordFound, date, levelName) {
+        this.storeClass(new recordedPoint(point, mainLetter, letterList, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
     }
 
     static saveToLocalStorage() {
@@ -289,7 +290,7 @@ class recordedPoint {
         if (localStorage.getItem(localStorageKey)) {
             let _recordedPoints = JSON.parse(localStorage.getItem(localStorageKey));
             _recordedPoints.forEach((item) => {
-                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date);
+                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.levelName);
                 this.storeClass(_lclass);
 
                 if(new Date(item.date).setHours(0, 0, 0, 0) == todayDate) {
@@ -308,7 +309,7 @@ prepareLetter();
 recordedPoint.loadLocalStorage();
 
 if(recordedPoint.todayRecord == null) {
-    recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate));
+    recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate, levelNameElement.innerHTML));
 }
 
 scoreBtnElement.onclick = () => {
