@@ -38,6 +38,7 @@ function updatePoint(point, firstLoad = false) {
     if(firstLoad == false) {
         recordedPoint.todayRecord.point = gdt.dyn.point;
         recordedPoint.todayRecord.wordFound = gdt.dyn.correctWordList;
+        recordedPoint.todayRecord.levelName = elm.levelName.innerHTML;
         recordedPoint.saveToLocalStorage();
     }
 }
