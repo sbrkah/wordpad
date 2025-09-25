@@ -1,16 +1,23 @@
-async function importWords(inputFile) {
-    try {
-        const response = await fetch(inputFile);
-        const text = await response.text();
-        const words = text
-            .split("\n")
-            .map((word) => word.trim())
-            .filter((word) => word.length > 3);
-        return words;
-    } catch (e) {
-        console.log(e);
-    }
-}
+import { importWords, toCaseSensitive } from "./utils.js";
+
+// Element Html
+let scoreElement = document.getElementById("score");
+let levelNameElement = document.getElementById("level-name");
+let progressBarElement = document.getElementById("progress-bar");
+let submitElement = document.getElementById("submit-btn");
+let deleteElement = document.getElementById("delete-btn");
+let shuffleElement = document.getElementById("shuffle-btn");
+let allNumpadElement = document.querySelectorAll(".numpad.letter");
+let regularNumpadElement = document.querySelectorAll(".numpad.letter:not(.main)");
+let mainNumpadElement = document.querySelector(".numpad.main");
+let notifyElement = document.getElementById("notify-container");
+let nmessageElement = document.getElementById("nmessage");
+let wordListElement = document.getElementById("word-content");
+let scoreBtnElement = document.getElementById("score-btn");
+let shareBtnElement = document.getElementById("share-btn");
+let scoreCloseElement = document.getElementById("score-close");
+let scoreContainerElement = document.getElementById("score-container");
+let recordElement = document.getElementById("record-content");
 
 const tryAgainMessage = [
     "Yahhh.. Coba lagi!",
@@ -52,10 +59,12 @@ const todayDate = new Date().setHours(0, 0, 0, 0);
 const notifInterval = 2000;
 const localStorageKey = "wordpad-str-00-0.12-record";
 const bigWordList = await importWords("./list_1.0.0_nospace.txt");
+
 let score = 0;
 let mainLetter = "G";
 let letterList = "ANYZIRM";
 let currentWord = "";
+let correctWordList = [];
 let smallWorldList = bigWordList.filter((word) => {
     // Check if word includes center letter
     if (!word.includes(mainLetter.toLowerCase())) return false;
@@ -73,28 +82,6 @@ let smallWorldList = bigWordList.filter((word) => {
 
     return true;
 });
-let correctWordList = [];
-
-// Element Html
-let scoreElement = document.getElementById("score");
-let levelNameElement = document.getElementById("level-name");
-let progressBarElement = document.getElementById("progress-bar");
-let submitElement = document.getElementById("submit-btn");
-let deleteElement = document.getElementById("delete-btn");
-let shuffleElement = document.getElementById("shuffle-btn");
-let allNumpadElement = document.querySelectorAll(".numpad.letter");
-let regularNumpadElement = document.querySelectorAll(
-    ".numpad.letter:not(.main)"
-);
-let mainNumpadElement = document.querySelector(".numpad.main");
-let notifyElement = document.getElementById("notify-container");
-let nmessageElement = document.getElementById("nmessage");
-let wordListElement = document.getElementById("word-content");
-let scoreBtnElement = document.getElementById("score-btn");
-let shareBtnElement = document.getElementById("share-btn");
-let scoreCloseElement = document.getElementById("score-close");
-let scoreContainerElement = document.getElementById("score-container");
-let recordElement = document.getElementById("record-content");
 
 function prepareLetter(_letterList = letterList) {
     let _letterArray = letterList.split("");
@@ -180,11 +167,6 @@ function handleNumpad(event) {
 function updateEnteredWord(updatedWord) {
     currentWord = updatedWord;
     document.getElementById("entered-word").innerHTML = currentWord;
-}
-
-function toCaseSensitive(str) {
-    if (!str) return ""; // handle empty/null/undefined
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 shuffleElement.addEventListener("click", () => {
