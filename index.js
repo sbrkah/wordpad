@@ -1,23 +1,5 @@
+import { elm } from "./variables.js";
 import { importWords, toCaseSensitive } from "./utils.js";
-
-// Element Html
-let scoreElement = document.getElementById("score");
-let levelNameElement = document.getElementById("level-name");
-let progressBarElement = document.getElementById("progress-bar");
-let submitElement = document.getElementById("submit-btn");
-let deleteElement = document.getElementById("delete-btn");
-let shuffleElement = document.getElementById("shuffle-btn");
-let allNumpadElement = document.querySelectorAll(".numpad.letter");
-let regularNumpadElement = document.querySelectorAll(".numpad.letter:not(.main)");
-let mainNumpadElement = document.querySelector(".numpad.main");
-let notifyElement = document.getElementById("notify-container");
-let nmessageElement = document.getElementById("nmessage");
-let wordListElement = document.getElementById("word-content");
-let scoreBtnElement = document.getElementById("score-btn");
-let shareBtnElement = document.getElementById("share-btn");
-let scoreCloseElement = document.getElementById("score-close");
-let scoreContainerElement = document.getElementById("score-container");
-let recordElement = document.getElementById("record-content");
 
 const tryAgainMessage = [
     "Yahhh.. Coba lagi!",
@@ -38,7 +20,7 @@ const successMessages = [
     "Cihuy!",
     "Top!",
 ];
-const namaLevel = [
+const levelList = [
     "Pemula",
     "Menengah",
     "Mahir",
@@ -85,28 +67,28 @@ let smallWorldList = bigWordList.filter((word) => {
 
 function prepareLetter(_letterList = letterList) {
     let _letterArray = letterList.split("");
-    regularNumpadElement.forEach((letter) => {
+    elm.regularNumpad.forEach((letterBtn) => {
         let _letter = _letterArray.shift();
-        letter.innerHTML = _letter;
-        letter.setAttribute("data-letter", _letter);
+        letterBtn.innerHTML = _letter;
+        letterBtn.setAttribute("data-letter", _letter);
     });
 
-    mainNumpadElement.innerHTML = mainLetter;
-    mainNumpadElement.setAttribute("data-letter", mainLetter);
+    elm.mainNumpad.innerHTML = mainLetter;
+    elm.mainNumpad.setAttribute("data-letter", mainLetter);
 }
 
 function updateScore(point, firstLoad = false) {
     score += point;
-    const _lvlIndex = namaLevel.indexOf(levelNameElement.innerHTML);
+    const _lvlIndex = levelList.indexOf(elm.levelName.innerHTML);
     const _toNextLevel = scoreLevel[_lvlIndex];
     const _prevSecore = scoreLevel[_lvlIndex - 1] | 0;
 
     let _progressPercentage = ((score - _prevSecore) / _toNextLevel) * 100;
     if (_progressPercentage >= 100) _progressPercentage = 100;
-    progressBarElement.style.width = `${_progressPercentage}%`;
+    elm.progressBar.style.width = `${_progressPercentage}%`;
 
     if (_progressPercentage >= 100) {
-        levelNameElement.innerHTML = namaLevel[_lvlIndex + 1];
+        elm.levelName.innerHTML = levelList[_lvlIndex + 1];
         document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
         setTimeout(() => {
             updateScore(0);
@@ -114,7 +96,7 @@ function updateScore(point, firstLoad = false) {
     }
 
     setTimeout(() => {
-        scoreElement.innerHTML = score;
+        elm.scoreText.innerHTML = score;
     }, notifInterval);
 
     if(firstLoad == false) {
@@ -127,21 +109,22 @@ function updateScore(point, firstLoad = false) {
 function notifier(message, type = "info") {
     let _score = 0;
     let _extraClass = ["show"];
-    nmessageElement.textContent = message;
+    elm.notifyMessage.textContent = message;
 
     if (type == "success") {
         _extraClass.push("success");
         _score = currentWord.length * scoreMultiplier;
-        nmessageElement.textContent = `${successMessages[Math.floor(Math.random() * successMessages.length)]
+        elm.notifyMessage.textContent = `${successMessages[Math.floor(Math.random() * successMessages.length)]
             } + ${_score} point`;
         updateEnteredWord("");
         updateScore(_score);
     }
 
-    notifyElement.classList.add(..._extraClass);
+    elm.notifyContainer.classList.add(..._extraClass);
+    // After notify container shown, hide it after sets seconds
     setTimeout(() => {
-        nmessageElement.textContent = "";
-        notifyElement.classList.remove(..._extraClass);
+        elm.notifyMessage.textContent = "";
+        elm.notifyContainer.classList.remove(..._extraClass);
     }, notifInterval);
 }
 
@@ -149,7 +132,7 @@ function updateCorrectList(newWord) {
     if (!newWord) return;
 
     correctWordList.push(newWord);
-    wordListElement.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
+    elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
 }
 
 function shuffleLetter() {
@@ -166,18 +149,18 @@ function handleNumpad(event) {
 
 function updateEnteredWord(updatedWord) {
     currentWord = updatedWord;
-    document.getElementById("entered-word").innerHTML = currentWord;
+    elm.enteredWord.innerHTML = currentWord;
 }
 
-shuffleElement.addEventListener("click", () => {
+elm.shuffleBtn.addEventListener("click", () => {
     shuffleLetter();
 });
 
-deleteElement.addEventListener("click", () => {
+elm.deleteBtn.addEventListener("click", () => {
     updateEnteredWord(currentWord.slice(0, -1));
 });
 
-submitElement.addEventListener("click", () => {
+elm.submitBtn.addEventListener("click", () => {
     if (!currentWord.toLowerCase().includes(mainLetter.toLowerCase())) {
         notifier(`Harus mengandung huruf utama '${mainLetter}'!`);
         return;
@@ -204,7 +187,7 @@ submitElement.addEventListener("click", () => {
     notifier("", "success");
 });
 
-allNumpadElement.forEach((numpad) => {
+elm.allNumpad.forEach((numpad) => {
     numpad.addEventListener("click", handleNumpad);
 });
 
@@ -294,19 +277,19 @@ if(recordedPoint.todayRecord == null) {
     recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate, levelNameElement.innerHTML));
 }
 
-scoreBtnElement.onclick = () => {
-    recordElement.innerHTML = recordedPoint.getAllComponent();
-    scoreContainerElement.classList.toggle("show");
+elm.scoreBtn.onclick = () => {
+    elm.recordContainer.innerHTML = recordedPoint.getAllComponent();
+    elm.scoreContainer.classList.toggle("show");
 };
 
-scoreCloseElement.onclick = () => {
-    scoreContainerElement.classList.remove("show");
+elm.closeScoreBtn.onclick = () => {
+    elm.scoreContainer.classList.remove("show");
 };
 
 window.addEventListener("click", (e) => {
-    if (scoreContainerElement.classList.contains("show")) {
-        if (!scoreContainerElement.contains(e.target) && !scoreBtnElement.contains(e.target)) {
-            scoreContainerElement.classList.remove("show");
+    if (elm.scoreContainer.classList.contains("show")) {
+        if (!elm.scoreContainer.contains(e.target) && !elm.scoreBtn.contains(e.target)) {
+            elm.scoreContainer.classList.remove("show");
         }
     }
 });
