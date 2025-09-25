@@ -1,123 +1,58 @@
-import { elm } from "./variables.js";
-import { importWords, toCaseSensitive } from "./utils.js";
+import { elm, gdt, recordedPoint } from "./variables.js";
+import { toCaseSensitive } from "./utils.js";
 
-const tryAgainMessage = [
-    "Yahhh.. Coba lagi!",
-    "Jangan menyerah!",
-    "Tetap semangat!",
-    "Hampir saja!",
-    "Kamu pasti bisa!",
-];
-const successMessages = [
-    "Bagus!",
-    "Hebat!",
-    "Mantap!",
-    "Keren!",
-    "Juara!",
-    "Oke!",
-    "Sip!",
-    "Yes!",
-    "Cihuy!",
-    "Top!",
-];
-const levelList = [
-    "Pemula",
-    "Menengah",
-    "Mahir",
-    "Profesional",
-    "Master",
-    "Grandmaster",
-];
-const scoreMultiplier = 1;
-const scoreLevel = [
-    22 * scoreMultiplier,
-    48 * scoreMultiplier,
-    78 * scoreMultiplier,
-    128 * scoreMultiplier,
-    198 * scoreMultiplier,
-    288 * scoreMultiplier,
-];
-const todayDate = new Date().setHours(0, 0, 0, 0);
-const notifInterval = 2000;
-const localStorageKey = "wordpad-str-00-0.12-record";
-const bigWordList = await importWords("./list_1.0.0_nospace.txt");
-
-let score = 0;
-let mainLetter = "G";
-let letterList = "ANYZIRM";
-let currentWord = "";
-let correctWordList = [];
-let smallWorldList = bigWordList.filter((word) => {
-    // Check if word includes center letter
-    if (!word.includes(mainLetter.toLowerCase())) return false;
-
-    // Check if ALL letters in the word are from allowed set (center + outer letters)
-    const allowedLetters = [...letterList.split(""), mainLetter].map((letter) =>
-        letter.toLowerCase()
-    );
-
-    for (let char of word) {
-        if (!allowedLetters.includes(char)) {
-            return false;
-        }
-    }
-
-    return true;
-});
-
-function prepareLetter(_letterList = letterList) {
-    let _letterArray = letterList.split("");
+function prepareLetter(_letterList = gdt.sets.letterList) {
+    let _letterArray = _letterList.split("");
     elm.regularNumpad.forEach((letterBtn) => {
         let _letter = _letterArray.shift();
         letterBtn.innerHTML = _letter;
         letterBtn.setAttribute("data-letter", _letter);
     });
 
-    elm.mainNumpad.innerHTML = mainLetter;
-    elm.mainNumpad.setAttribute("data-letter", mainLetter);
+    elm.mainNumpad.innerHTML = gdt.sets.mainLetter;
+    elm.mainNumpad.setAttribute("data-letter", gdt.sets.mainLetter);
 }
 
-function updateScore(point, firstLoad = false) {
-    score += point;
-    const _lvlIndex = levelList.indexOf(elm.levelName.innerHTML);
-    const _toNextLevel = scoreLevel[_lvlIndex];
-    const _prevSecore = scoreLevel[_lvlIndex - 1] | 0;
+function updatePoint(point, firstLoad = false) {
+    gdt.dyn.point += point;
+    const _lvlIndex = gdt.stt.levelList.indexOf(elm.levelName.innerHTML);
+    const _toNextLevel = gdt.sets.pointEachLevel[_lvlIndex];
+    const _prevSecore = gdt.sets.pointEachLevel[_lvlIndex - 1] | 0;
 
-    let _progressPercentage = ((score - _prevSecore) / _toNextLevel) * 100;
+    let _progressPercentage = ((gdt.dyn.point - _prevSecore) / _toNextLevel) * 100;
     if (_progressPercentage >= 100) _progressPercentage = 100;
     elm.progressBar.style.width = `${_progressPercentage}%`;
 
     if (_progressPercentage >= 100) {
-        elm.levelName.innerHTML = levelList[_lvlIndex + 1];
+        elm.levelName.innerHTML = gdt.stt.levelList[_lvlIndex + 1];
         document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
         setTimeout(() => {
-            updateScore(0);
+            updatePoint(0);
         }, 550);
     }
 
     setTimeout(() => {
-        elm.scoreText.innerHTML = score;
-    }, notifInterval);
+        elm.scoreText.innerHTML = gdt.dyn.point;
+    }, gdt.sets.notifyInterval);
 
     if(firstLoad == false) {
-        recordedPoint.todayRecord.point = score;
-        recordedPoint.todayRecord.wordFound = correctWordList;
+        recordedPoint.todayRecord.point = gdt.dyn.point;
+        recordedPoint.todayRecord.wordFound = gdt.dyn.correctWordList;
         recordedPoint.saveToLocalStorage();
     }
 }
 
 function notifier(message, type = "info") {
-    let _score = 0;
     let _extraClass = ["show"];
     elm.notifyMessage.textContent = message;
 
     if (type == "success") {
         _extraClass.push("success");
-        _score = currentWord.length * scoreMultiplier;
-        elm.notifyMessage.textContent = `${successMessages[Math.floor(Math.random() * successMessages.length)]
-            } + ${_score} point`;
+        let _point = gdt.dyn.currentWord.length * gdt.sets.pointMultiplier;
+        elm.notifyMessage.textContent = `${gdt.stt.successMessages[Math.floor(Math.random() * gdt.stt.successMessages.length)]
+            } + ${_point} point`;
         updateEnteredWord("");
-        updateScore(_score);
+        updatePoint(_point);
     }
 
     elm.notifyContainer.classList.add(..._extraClass);
@@ -125,31 +60,31 @@ function notifier(message, type = "info") {
     setTimeout(() => {
         elm.notifyMessage.textContent = "";
         elm.notifyContainer.classList.remove(..._extraClass);
-    }, notifInterval);
+    }, gdt.sets.notifyInterval);
 }
 
 function updateCorrectList(newWord) {
     if (!newWord) return;
 
-    correctWordList.push(newWord);
+    gdt.dyn.correctWordList.push(newWord);
     elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
 }
 
 function shuffleLetter() {
-    let _letterArray = letterList.split("");
+    let _letterArray = gdt.sets.letterList.split("");
     _letterArray.sort(() => Math.random() - 0.5);
-    letterList = _letterArray.join("");
-    prepareLetter(letterList);
+    gdt.sets.letterList = _letterArray.join("");
+    prepareLetter(gdt.sets.letterList);
 }
 
 function handleNumpad(event) {
     let _letter = event.target.getAttribute("data-letter");
-    updateEnteredWord(currentWord + _letter);
+    updateEnteredWord(gdt.dyn.currentWord + _letter);
 }
 
 function updateEnteredWord(updatedWord) {
-    currentWord = updatedWord;
-    elm.enteredWord.innerHTML = currentWord;
+    gdt.dyn.currentWord = updatedWord;
+    elm.enteredWord.innerHTML = gdt.dyn.currentWord;
 }
 
 elm.shuffleBtn.addEventListener("click", () => {
@@ -157,33 +92,33 @@ elm.shuffleBtn.addEventListener("click", () => {
 });
 
 elm.deleteBtn.addEventListener("click", () => {
-    updateEnteredWord(currentWord.slice(0, -1));
+    updateEnteredWord(gdt.dyn.currentWord.slice(0, -1));
 });
 
 elm.submitBtn.addEventListener("click", () => {
-    if (!currentWord.toLowerCase().includes(mainLetter.toLowerCase())) {
-        notifier(`Harus mengandung huruf utama '${mainLetter}'!`);
+    if (!gdt.dyn.currentWord.toLowerCase().includes(gdt.sets.mainLetter.toLowerCase())) {
+        notifier(`Harus mengandung huruf utama '${gdt.sets.mainLetter}'!`);
         return;
     }
 
-    if (currentWord.length <= 3) {
+    if (gdt.dyn.currentWord.length <= 3) {
         notifier(`Terlalu pendek!`);
         return;
     }
 
-    if (correctWordList.includes(toCaseSensitive(currentWord))) {
+    if (gdt.dyn.correctWordList.includes(toCaseSensitive(gdt.dyn.currentWord))) {
         notifier(`Kata sudah ditemukan!`);
         updateEnteredWord("");
         return;
     }
 
-    if (!smallWorldList.includes(currentWord.toLowerCase())) {
-        notifier(`Tidak ditemukan, ${tryAgainMessage[Math.floor(Math.random() * tryAgainMessage.length)]}`);
+    if (!gdt.stt.smallWordList.includes(gdt.dyn.currentWord.toLowerCase())) {
+        notifier(`Tidak ditemukan, ${gdt.stt.tryAgainMessage[Math.floor(Math.random() * gdt.stt.tryAgainMessage.length)]}`);
         updateEnteredWord("");
         return;
     }
 
-    updateCorrectList(toCaseSensitive(currentWord));
+    updateCorrectList(toCaseSensitive(gdt.dyn.currentWord));
     notifier("", "success");
 });
 
@@ -191,90 +126,11 @@ elm.allNumpad.forEach((numpad) => {
     numpad.addEventListener("click", handleNumpad);
 });
 
-class recordedPoint {
-    static recordedPoints = [];
-    static todayRecord = null;
-
-    constructor(point, mainLetter, letterList, wordFound, date, levelName = "Pemulai") {
-        this.point = point;
-        this.mainLetter = mainLetter;
-        this.letterList = letterList;
-        this.wordFound = wordFound;
-        this.levelName = levelName;
-        this.date = new Date(date);
-    }
-
-    getComponent() {
-        return `
-            <div class="record-item">
-                <div class="record-item-container">
-                    <div class="record-item-point">
-                        <i class="fa-solid fa-feather-pointed"></i>
-                        <h2 class="scored">${this.point}</h2>
-                    </div>
-                    <div class="record-item-word">
-                        Menemukan
-                        <span class="worded total">${this.wordFound.length}</span>
-                        <span class="worded">kata</span>
-                    </div>
-                </div>
-                <div class="record-item-detail">
-                    <span class="dated">${this.date.toDateString()}</span>
-                    <div class="numpad-item-container">
-                        <div class="numpad-item main">${this.mainLetter}</div>
-                        ${this.letterList.split("").map((item) => `<div class="numpad-item">${item}</div>`).join("")}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    static getAllComponent(){
-        let _sortedList = this.recordedPoints.sort((a, b) => b.point - a.point);
-        let _top10 = _sortedList.slice(0, 10);
-
-        return _top10.map((item) => item.getComponent()).join("");
-    }
-
-    static storeClass(recordItem) {
-        this.recordedPoints.push(recordItem);
-        if(this.todayRecord === null && new Date(recordItem.date).setHours(0, 0, 0, 0) == todayDate) {
-            this.todayRecord = recordItem;
-        }
-    }
-
-    static store(point, mainLetter, letterList, wordFound, date, levelName) {
-        this.storeClass(new recordedPoint(point, mainLetter, letterList, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
-    }
-
-    static saveToLocalStorage() {
-        localStorage.setItem(localStorageKey, JSON.stringify(this.recordedPoints));
-    }
-
-    static loadLocalStorage() {
-        if (localStorage.getItem(localStorageKey)) {
-            let _recordedPoints = JSON.parse(localStorage.getItem(localStorageKey));
-            _recordedPoints.forEach((item) => {
-                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.levelName);
-                this.storeClass(_lclass);
-
-                if(new Date(item.date).setHours(0, 0, 0, 0) == todayDate) {
-                    this.todayRecord = _lclass;
-                    updateScore(item.point, true);
-                    item.wordFound.forEach((word) => {
-                        updateCorrectList(word);
-                    });
-                }
-            });
-        }
-    }
-}
-
 prepareLetter();
-recordedPoint.loadLocalStorage();
+recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
 if(recordedPoint.todayRecord == null) {
-    recordedPoint.storeClass(new recordedPoint(score, mainLetter, letterList, [], todayDate, levelNameElement.innerHTML));
+    recordedPoint.storeClass(new recordedPoint(gdt.dyn.point, gdt.sets.mainLetter, gdt.sets.letterList, [], gdt.stt.todayDate, elm.levelName.innerHTML));
 }
 
 elm.scoreBtn.onclick = () => {
