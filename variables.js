@@ -72,8 +72,8 @@ export let gdt = {
             288,
         ],
         pointEachLevel: [],
-        mainLetter: "G",
-        letterList: "ANYZIRM",
+        mainLetter: "P",
+        letterList: "ANKLRIG",
     },
     dyn: {
         point: 0,
