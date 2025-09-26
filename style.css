@@ -456,6 +456,7 @@ body {
 #word-content{
     gap: 4px;
     flex-direction: row;
+    overflow: hidden;
 }
 
 .blinking-cursor {
