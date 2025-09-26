@@ -51,65 +51,24 @@
                 <span id="level-name">Pemula</span>
             </div>
         </div>
-        <!-- <div class="progress-container">
-            <div class="progress-bar">
-                <span class="p-dots filled" data-progress="1"></span>
-                <span class="p-dots filled" data-progress="2"></span>
-                <span class="p-dots filled" data-progress="3"></span>
-                <span class="p-dots filled" data-progress="4"></span>
-                <span class="p-dots filled" data-progress="5"></span>
-                <span class="p-dots filled" data-progress="6"></span>
-                <span class="p-dots filled" data-progress="7"></span>
-                <span class="p-dots filled" data-progress="8"></span>
-                <span class="p-dots filled" data-progress="9"></span>
-                <span class="p-dots filled" data-progress="10"></span>
-                <span class="p-dots filled" data-progress="11"></span>
-                <span class="p-dots filled" data-progress="12"></span>
-                <span class="p-dots filled" data-progress="13"></span>
-                <span class="p-dots filled" data-progress="14"></span>
-                <span class="p-dots filled" data-progress="15"></span>
-                <span class="p-dots filled" data-progress="16"></span>
-                <span class="p-dots filled" data-progress="17"></span>
-                <span class="p-dots filled" data-progress="18"></span>
-                <span class="p-dots filled" data-progress="19"></span>
-                <span class="p-dots filled" data-progress="20"></span>
-                <span class="p-dots filled" data-progress="21"></span>
-                <span class="p-dots filled" data-progress="22"></span>
-                <span class="p-dots" data-progress="23"></span>
-                <span class="p-dots" data-progress="24"></span>
-                <span class="p-dots" data-progress="25"></span>
-                <span class="p-dots" data-progress="26"></span>
-                <span class="p-dots" data-progress="27"></span>
-                <span class="p-dots" data-progress="28"></span>
-                <span class="p-dots" data-progress="29"></span>
-                <span class="p-dots" data-progress="30"></span>
-                <span class="p-dots" data-progress="31"></span>
-                <span class="p-dots" data-progress="32"></span>
-                <span class="p-dots" data-progress="33"></span>
-                <span class="p-dots" data-progress="34"></span>
-                <span class="p-dots" data-progress="35"></span>
-                <span class="p-dots" data-progress="36"></span>
-                <span class="p-dots" data-progress="37"></span>
-                <span class="p-dots" data-progress="38"></span>
-                <span class="p-dots" data-progress="39"></span>
-                <span class="p-dots" data-progress="40"></span>
-                <span class="p-dots" data-progress="41"></span>
-                <span class="p-dots" data-progress="42"></span>
-                <span class="p-dots" data-progress="43"></span>
-                <span class="p-dots" data-progress="44"></span>
-                <span class="p-dots" data-progress="45"></span>
-                <span class="p-dots" data-progress="46"></span>
-                <span class="p-dots" data-progress="47"></span>
-                <span class="p-dots" data-progress="48"></span>
-                <span class="p-dots" data-progress="49"></span>
-                <span class="p-dots" data-progress="50"></span>
-            </div>
-        </div> -->
         <div class="word-container">
-            <div id="word-content">
+            <div id="full-word-container" class="word-content-container">
+                <div class="full-word-tittle">
+                    <i class="fas fa-file-word"></i>
+                    <h4>Kata Ditemukan</h4>
+                </div>
+                <div id="full-word-content">
+                    <!-- word list -->
+                </div>
+                <div class="max-min-btn full minimize" id="the-minimum"><i class="fas fa-chevron-up"></i></div>
+            </div>
+            <div id="word-content" class="word-content-container">
+                <!-- word list -->
                 <span>&nbsp</span>
             </div>
             <div class="the-end"></div>
+            <div class="max-min-btn" id="the-maximum"><i class="fas fa-chevron-down"></i></div>
+            <div class="max-min-btn minimize" id="the-maximum-reverse"><i class="fas fa-chevron-up"></i></div>
         </div>
         <div id="notify-container" class="">
             <span id="nmessage">Semoga berungga!</span>
@@ -120,35 +79,11 @@
                 Rekor Saya
             </div>
             <div class="score-subtitle">
-                <span>Kau dewa kata?! Lihat seberapa hebat rekormu di sini — mulai dari skor, jumlah kata dan lainnya.</span>
+                <span>Kau dewa kata?! Lihat seberapa hebat rekormu di sini — mulai dari skor, jumlah kata dan
+                    lainnya.</span>
             </div>
             <div id="record-content">
-                <!-- <div class="record-item">
-                    <div class="record-item-container">
-                        <div class="record-item-point">
-                            <i class="fa-solid fa-feather-pointed"></i>
-                            <h2 class="scored">134</h2>
-                        </div>
-                        <div class="record-item-word">
-                            Menemukan
-                            <span class="worded total">52</span>
-                            <span class="worded">kata</span>
-                        </div>
-                    </div>
-                    <div class="record-item-detail">
-                        <span class="dated">Sabtu, 28 Agystus 2022</span>
-                        <div class="numpad-item-container">
-                            <div class="numpad-item main">N</div>
-                            <div class="numpad-item">F</div>
-                            <div class="numpad-item">A</div>
-                            <div class="numpad-item">S</div>
-                            <div class="numpad-item">K</div>
-                            <div class="numpad-item">W</div>
-                            <div class="numpad-item">B</div>
-                            <div class="numpad-item">P</div>
-                        </div>
-                    </div>
-                </div> -->
+                <!-- record item -->
             </div>
             <div class="score-footer">
                 <span>*hanya menyimpan rekor game harian</span>
@@ -197,4 +132,5 @@
 
     <script type="module" src="index.js"></script>
 </body>
+
 </html>

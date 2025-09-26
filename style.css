@@ -212,8 +212,9 @@ body {
     flex-direction: column;
     position: absolute;
     left: 50%;
-    transform: translate(-50%, 120%);
+    transform: translate(-50%, 200%);
     padding: 15px 32px;
+    padding-top: 25px;
     background-color: #fff;
     color: var(var(--cblue-main));
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -347,7 +348,6 @@ body {
     color: var(--cblue-main);
     font-weight: 450;
     max-width: var(--width-fit);
-    overflow: hidden;
     position: relative;
 }
 
@@ -361,9 +361,100 @@ body {
     background-color: #E6EAEF;
 }
 
+.max-min-btn{
+    position: absolute;
+    width: 36px;
+    height: 8px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    background-color: #E6EAEF;
+    color: #fff;
+    cursor: pointer;
+    right: 50%;
+    bottom: -8px;
+    padding-bottom: 4px;
+    transform: translate(50%, -0%);
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#the-maximum{
+    z-index: 6;
+}
+
+#the-maximum-reverse{
+    color: #000;
+}
+
+.max-min-btn.full{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.word-content-container{
+    width: 100%;
+    background-color: #E6EAEF;
+    display: flex;
+}
+
+#full-word-container{
+    height: 100%;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    padding-bottom: 12px;
+    border-radius: 12px;
+    transform-origin: top;
+    transition: transform 0.25s ease, z-index 0.18s ease;
+    transform: scaleY(0);
+}
+
+#full-word-container.full{
+    z-index: 66;
+    height: 420%;
+    transform: scaleY(1);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#full-word-container.full .max-min-btn.minimize{
+    z-index: 66;
+}
+
+.word-full{
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: var(--cgreen-main);
+}
+
+.full-word-tittle{
+    display: flex;
+    padding: 12px 17px;
+    gap: 6px;
+    align-items: center;
+    color: #1f2d2c;
+    border-bottom: dashed 2px #767474;
+}
+
+.full-word-tittle i{
+    font-size: 13px;
+}
+
+#full-word-content{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 17px;
+    gap: 6px;
+    align-items: center;
+    color: #1f2d2c;
+    overflow-y: scroll;
+    margin-top: 9px;
+}
+
 #word-content{
     gap: 4px;
-    display: flex;
     flex-direction: row;
 }
 

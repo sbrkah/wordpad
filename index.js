@@ -35,7 +35,7 @@ function updatePoint(point, firstLoad = false) {
         elm.scoreText.innerHTML = gdt.dyn.point;
     }, gdt.sets.notifyInterval);
 
-    if(firstLoad == false) {
+    if (firstLoad == false) {
         recordedPoint.todayRecord.point = gdt.dyn.point;
         recordedPoint.todayRecord.wordFound = gdt.dyn.correctWordList;
         recordedPoint.todayRecord.levelName = elm.levelName.innerHTML;
@@ -69,6 +69,7 @@ function updateCorrectList(newWord) {
 
     gdt.dyn.correctWordList.push(newWord);
     elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
+    elm.fullWordContent.insertAdjacentHTML("afterbegin", `<div class="word-full">${newWord}</div>`);
 }
 
 function shuffleLetter() {
@@ -130,7 +131,7 @@ elm.allNumpad.forEach((numpad) => {
 prepareLetter();
 recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
-if(recordedPoint.todayRecord == null) {
+if (recordedPoint.todayRecord == null) {
     recordedPoint.storeClass(new recordedPoint(gdt.dyn.point, gdt.sets.mainLetter, gdt.sets.letterList, [], gdt.stt.todayDate, elm.levelName.innerHTML));
 }
 
@@ -148,5 +149,24 @@ window.addEventListener("click", (e) => {
         if (!elm.scoreContainer.contains(e.target) && !elm.scoreBtn.contains(e.target)) {
             elm.scoreContainer.classList.remove("show");
         }
+    }
+
+    if(elm.fullWordContainer.classList.contains("full")) {
+        if (!elm.fullWordContainer.contains(e.target) && !elm.maximumBtn.contains(e.target)) {
+            elm.fullWordContainer.classList.remove("full");
+            elm.maximumReverseBtn.style.zIndex = 1;
+        }
+    }
+});
+
+elm.maximumBtn.onclick = () => {
+    elm.fullWordContainer.classList.toggle("full");
+    elm.maximumReverseBtn.style.zIndex = 66;
+};
+
+[elm.maximumReverseBtn, elm.minimumBtn].forEach((btn) => {
+    btn.onclick = () => {
+        elm.fullWordContainer.classList.remove("full");
+        elm.maximumReverseBtn.style.zIndex = 1;
     }
 });

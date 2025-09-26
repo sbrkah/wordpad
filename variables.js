@@ -19,6 +19,11 @@ export let elm = {
     scoreContainer: document.getElementById("score-container"),
     recordContainer: document.getElementById("record-content"),
     enteredWord: document.getElementById("entered-word"),
+    maximumBtn: document.getElementById("the-maximum"),
+    maximumReverseBtn: document.getElementById("the-maximum-reverse"),
+    minimumBtn: document.getElementById("the-minimum"),
+    fullWordContainer: document.getElementById("full-word-container"),
+    fullWordContent: document.getElementById("full-word-content"),
 }
 
 export let gdt = {
