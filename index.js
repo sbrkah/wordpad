@@ -21,10 +21,10 @@ function updatePoint(point, firstLoad = false) {
 
     let _progressPercentage = ((gdt.dyn.point - _prevSecore) / _toNextLevel) * 100;
     if (_progressPercentage >= 100) _progressPercentage = 100;
+    elm.progressBar.style.width = `${_progressPercentage}%`;
 
     if (_progressPercentage >= 100 && elm.levelName.innerHTML != gdt.stt.levelList[-1]) {
         elm.levelName.innerHTML = gdt.stt.levelList[_lvlIndex + 1];
-        elm.progressBar.style.width = `${_progressPercentage}%`;
         document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
         setTimeout(() => {
             updatePoint(0);
@@ -151,7 +151,7 @@ window.addEventListener("click", (e) => {
         }
     }
 
-    if(elm.fullWordContainer.classList.contains("full")) {
+    if (elm.fullWordContainer.classList.contains("full")) {
         if (!elm.fullWordContainer.contains(e.target) && !elm.maximumBtn.contains(e.target)) {
             elm.fullWordContainer.classList.remove("full");
             elm.maximumReverseBtn.style.zIndex = 1;

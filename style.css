@@ -325,7 +325,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 12px;
-    margin-bottom: 7%;
+    margin-bottom: 1.5%;
 }
 
 #score-close{
@@ -386,6 +386,7 @@ body {
 
 #the-maximum-reverse{
     color: #000;
+    bottom: -9px;
 }
 
 .max-min-btn.full{
@@ -564,6 +565,12 @@ body {
     text-align: center;
     padding-bottom: 15px;
     width: var(--width-fit);
+}
+
+.footer-container img{
+    width: 33%;
+    height: auto;
+    margin: auto;
 }
 
 .footer-content {
