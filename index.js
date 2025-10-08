@@ -29,7 +29,7 @@ function updatePoint(point, firstLoad = false) {
         
         // Change decoration at the right & left of level name
         for(var i = 0; i < elm.levelDecorator.length; i++){
-            elm.levelDecorator[i].innerHTML = gdt.stt.levelDecorator[_lvlIndex + 1];
+            elm.levelDecorator[i].innerHTML = `<img src="./assets/${gdt.stt.levelDecorator[_lvlIndex + 1]}" alt="image decoration for level" />`
         }
         
         setTimeout(() => {
