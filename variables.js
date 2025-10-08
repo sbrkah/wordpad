@@ -3,6 +3,7 @@ import { importWords } from "./utils.js";
 export let elm = {
     scoreText: document.getElementById("score"),
     levelName: document.getElementById("level-name"),
+    levelDecorator: document.getElementsByClassName("level-decorator"),
     progressBar: document.getElementById("progress-bar"),
     submitBtn: document.getElementById("submit-btn"),
     deleteBtn: document.getElementById("delete-btn"),
@@ -54,6 +55,14 @@ export let gdt = {
             "Profesional",
             "Master",
             "Grandmaster",
+        ],
+        levelDecorator: [
+            "🧄",
+            "🌻",
+            "🌼",
+            "🥉",
+            "🥈",
+            "🥇",
         ],
         todayDate: new Date().setHours(0, 0, 0, 0),
         bigWordList: await importWords("./list_1.0.0_nospace.txt"),

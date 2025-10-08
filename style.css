@@ -119,6 +119,8 @@ body {
     font-weight: bold;
     color: #1f2d2c;
     gap: 8px;
+    width: 100%;
+    position: relative;
 }
 
 .bar-container {
@@ -140,15 +142,15 @@ body {
 .level-bar-dots {
     height: 12px;
     width: 12px;
-    border-radius: 50%;
+    border-radius: 33%;
     border: 2px solid #afafaf;
     background-color: #fff;
     display: flex;
 }
 
 .level-bar-dots.filled{
-    border-color: #000 !important;
-    background-color: #000 !important;
+    border-color: #0c3215 !important;
+    background-color: #0c3215 !important;
 }
 
 .level-container {
@@ -172,6 +174,18 @@ body {
 
 .p-dots.filled {
     background-color: #000 !important;
+}
+
+#level-name-wrapper{
+    position: absolute;
+    display: flex;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+}
+
+#level-name{
+    margin: 0 3.3px;
 }
 
 .progress-bar {

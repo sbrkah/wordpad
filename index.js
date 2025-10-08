@@ -15,17 +15,23 @@ function prepareLetter(_letterList = gdt.sets.letterList) {
 
 function updatePoint(point, firstLoad = false) {
     gdt.dyn.point += point;
-    const _lvlIndex = gdt.stt.levelList.indexOf(elm.levelName.innerHTML);
+    const _lvlIndex = gdt.stt.levelList.indexOf(elm.levelName.textContent);
     const _toNextLevel = gdt.sets.pointEachLevel[_lvlIndex];
     const _prevSecore = gdt.sets.pointEachLevel[_lvlIndex - 1] | 0;
 
     let _progressPercentage = ((gdt.dyn.point - _prevSecore) / _toNextLevel) * 100;
     if (_progressPercentage >= 100) _progressPercentage = 100;
     elm.progressBar.style.width = `${_progressPercentage}%`;
-
+    
     if (_progressPercentage >= 100 && elm.levelName.innerHTML != gdt.stt.levelList[-1]) {
         elm.levelName.innerHTML = gdt.stt.levelList[_lvlIndex + 1];
         document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
+        
+        // Change decoration at the right & left of level name
+        for(var i = 0; i < elm.levelDecorator.length; i++){
+            elm.levelDecorator[i].innerHTML = gdt.stt.levelDecorator[_lvlIndex + 1];
+        }
+        
         setTimeout(() => {
             updatePoint(0);
         }, 550);
