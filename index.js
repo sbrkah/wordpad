@@ -1,7 +1,7 @@
-import { elm, gdt, recordedPoint } from "./variables.js";
+import { elm, gd, gdp, recordedPoint } from "./variables.js";
 import { toCaseSensitive } from "./utils.js";
 
-function prepareLetter(_letterList = gdt.sets.letterList) {
+function prepareLetter(_letterList = gd.letterList) {
     let _letterArray = _letterList.split("");
     elm.regularNumpad.forEach((letterBtn) => {
         let _letter = _letterArray.shift();
@@ -9,26 +9,26 @@ function prepareLetter(_letterList = gdt.sets.letterList) {
         letterBtn.setAttribute("data-letter", _letter);
     });
 
-    elm.mainNumpad.innerHTML = gdt.sets.mainLetter;
-    elm.mainNumpad.setAttribute("data-letter", gdt.sets.mainLetter);
+    elm.mainNumpad.innerHTML = gd.mainLetter;
+    elm.mainNumpad.setAttribute("data-letter", gd.mainLetter);
 }
 
 function updatePoint(point, firstLoad = false) {
-    gdt.dyn.point += point;
-    const _lvlIndex = gdt.stt.levelList.indexOf(elm.levelName.textContent);
-    const _toNextLevel = gdt.sets.pointEachLevel[_lvlIndex];
-    const _prevSecore = gdt.sets.pointEachLevel[_lvlIndex - 1] | 0;
+    gdp.point += point;
+    const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
+    const _toNextLevel = gd.pointEachLevel[_lvlIndex];
+    const _prevSecore = gd.pointEachLevel[_lvlIndex - 1] | 0;
 
-    let _progressPercentage = ((gdt.dyn.point - _prevSecore) / _toNextLevel) * 100;
-    elm.progressBar.style.width = `${(gdt.dyn.point / gdt.sets.pointEachLevel[gdt.sets.pointEachLevel.length - 1]) * 100}%`;
+    let _progressPercentage = ((gdp.point - _prevSecore) / _toNextLevel) * 100;
+    elm.progressBar.style.width = `${(gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100}%`;
     
-    if (_progressPercentage >= 100 && elm.levelName.innerHTML != gdt.stt.levelList[-1]) {
-        elm.levelName.innerHTML = gdt.stt.levelList[_lvlIndex + 1];
+    if (_progressPercentage >= 100 && elm.levelName.innerHTML != gd.levelList[-1]) {
+        elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
         document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
         
         // Change decoration at the right & left of level name
         for(var i = 0; i < elm.levelDecorator.length; i++){
-            elm.levelDecorator[i].innerHTML = `<img src="./assets/${gdt.stt.levelDecorator[_lvlIndex + 1]}" alt="image decoration for level" />`
+            elm.levelDecorator[i].innerHTML = `<img src="./assets/${gd.levelDecorator[_lvlIndex + 1]}" alt="image decoration for level" />`
         }
         
         setTimeout(() => {
@@ -37,12 +37,12 @@ function updatePoint(point, firstLoad = false) {
     }
 
     setTimeout(() => {
-        elm.scoreText.innerHTML = gdt.dyn.point;
-    }, gdt.sets.notifyInterval);
+        elm.scoreText.innerHTML = gdp.point;
+    }, gd.notifyInterval);
 
     if (firstLoad == false) {
-        recordedPoint.todayRecord.point = gdt.dyn.point;
-        recordedPoint.todayRecord.wordFound = gdt.dyn.correctWordList;
+        recordedPoint.todayRecord.point = gdp.point;
+        recordedPoint.todayRecord.wordFound = gdp.correctWordList;
         recordedPoint.todayRecord.levelName = elm.levelName.innerHTML;
         recordedPoint.saveToLocalStorage();
     }
@@ -54,8 +54,8 @@ function notifier(message, type = "info") {
 
     if (type == "success") {
         _extraClass.push("success");
-        let _point = gdt.dyn.currentWord.length * gdt.sets.pointMultiplier;
-        elm.notifyMessage.textContent = `${gdt.stt.successMessages[Math.floor(Math.random() * gdt.stt.successMessages.length)]
+        let _point = gdp.currentWord.length * gd.pointMultiplier;
+        elm.notifyMessage.textContent = `${gd.successMessages[Math.floor(Math.random() * gd.successMessages.length)]
             } + ${_point} point`;
         updateEnteredWord("");
         updatePoint(_point);
@@ -66,32 +66,32 @@ function notifier(message, type = "info") {
     setTimeout(() => {
         elm.notifyMessage.textContent = "";
         elm.notifyContainer.classList.remove(..._extraClass);
-    }, gdt.sets.notifyInterval);
+    }, gd.notifyInterval);
 }
 
 function updateCorrectList(newWord) {
     if (!newWord) return;
 
-    gdt.dyn.correctWordList.push(newWord);
+    gdp.correctWordList.push(newWord);
     elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
     elm.fullWordContent.insertAdjacentHTML("afterbegin", `<div class="word-full">${newWord}</div>`);
 }
 
 function shuffleLetter() {
-    let _letterArray = gdt.sets.letterList.split("");
+    let _letterArray = gd.letterList.split("");
     _letterArray.sort(() => Math.random() - 0.5);
-    gdt.sets.letterList = _letterArray.join("");
-    prepareLetter(gdt.sets.letterList);
+    gd.letterList = _letterArray.join("");
+    prepareLetter(gd.letterList);
 }
 
 function handleNumpad(event) {
     let _letter = event.target.getAttribute("data-letter");
-    updateEnteredWord(gdt.dyn.currentWord + _letter);
+    updateEnteredWord(gdp.currentWord + _letter);
 }
 
 function updateEnteredWord(updatedWord) {
-    gdt.dyn.currentWord = updatedWord;
-    elm.enteredWord.innerHTML = gdt.dyn.currentWord;
+    gdp.currentWord = updatedWord;
+    elm.enteredWord.innerHTML = gdp.currentWord;
 }
 
 elm.shuffleBtn.addEventListener("click", () => {
@@ -99,33 +99,33 @@ elm.shuffleBtn.addEventListener("click", () => {
 });
 
 elm.deleteBtn.addEventListener("click", () => {
-    updateEnteredWord(gdt.dyn.currentWord.slice(0, -1));
+    updateEnteredWord(gdp.currentWord.slice(0, -1));
 });
 
 elm.submitBtn.addEventListener("click", () => {
-    if (!gdt.dyn.currentWord.toLowerCase().includes(gdt.sets.mainLetter.toLowerCase())) {
-        notifier(`Harus mengandung huruf utama '${gdt.sets.mainLetter}'!`);
+    if (!gdp.currentWord.toLowerCase().includes(gd.mainLetter.toLowerCase())) {
+        notifier(`Harus mengandung huruf utama '${gd.mainLetter}'!`);
         return;
     }
 
-    if (gdt.dyn.currentWord.length <= 3) {
+    if (gdp.currentWord.length <= 3) {
         notifier(`Terlalu pendek!`);
         return;
     }
 
-    if (gdt.dyn.correctWordList.includes(toCaseSensitive(gdt.dyn.currentWord))) {
+    if (gdp.correctWordList.includes(toCaseSensitive(gdp.currentWord))) {
         notifier(`Kata sudah ditemukan!`);
         updateEnteredWord("");
         return;
     }
 
-    if (!gdt.stt.smallWordList.includes(gdt.dyn.currentWord.toLowerCase())) {
-        notifier(`Tidak ditemukan, ${gdt.stt.tryAgainMessage[Math.floor(Math.random() * gdt.stt.tryAgainMessage.length)]}`);
+    if (!gd.smallWordList.includes(gdp.currentWord.toLowerCase())) {
+        notifier(`Tidak ditemukan, ${gd.tryAgainMessage[Math.floor(Math.random() * gd.tryAgainMessage.length)]}`);
         updateEnteredWord("");
         return;
     }
 
-    updateCorrectList(toCaseSensitive(gdt.dyn.currentWord));
+    updateCorrectList(toCaseSensitive(gdp.currentWord));
     notifier("", "success");
 });
 
@@ -137,7 +137,7 @@ prepareLetter();
 recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
 if (recordedPoint.todayRecord == null) {
-    recordedPoint.storeClass(new recordedPoint(gdt.dyn.point, gdt.sets.mainLetter, gdt.sets.letterList, [], gdt.stt.todayDate, elm.levelName.innerHTML));
+    recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, elm.levelName.innerHTML));
 }
 
 elm.scoreBtn.onclick = () => {

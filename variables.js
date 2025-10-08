@@ -27,76 +27,73 @@ export let elm = {
     fullWordContent: document.getElementById("full-word-content"),
 }
 
-export let gdt = {
-    stt: {
-        tryAgainMessage: [
-            "Yahhh.. Coba lagi!",
-            "Jangan menyerah!",
-            "Tetap semangat!",
-            "Hampir saja!",
-            "Kamu pasti bisa!",
-        ],
-        successMessages: [
-            "Bagus!",
-            "Hebat!",
-            "Mantap!",
-            "Keren!",
-            "Juara!",
-            "Oke!",
-            "Sip!",
-            "Yes!",
-            "Cihuy!",
-            "Top!",
-        ],
-        levelList: [
-            "Pemula",
-            "Menengah",
-            "Mahir",
-            "Profesional",
-            "Master",
-            "Grandmaster",
-        ],
-        levelDecorator: [
-            "level_1.png",
-            "level_2.png",
-            "level_3.png",
-            "level_4.png",
-            "level_5.png",
-            "level_6.png",
-        ],
-        todayDate: new Date().setHours(0, 0, 0, 0),
-        bigWordList: await importWords("./list_1.0.0_nospace.txt"),
-        smallWordList: [],
-    },
-    sets: {
-        localStorageKey: "wordpad-str-00-0.12-record",
-        notifyInterval: 2000,
-        pointMultiplier: 1,
-        basePoint: [
-            22,
-            38,
-            56,
-            78,
-            120,
-            168,
-        ],
-        pointEachLevel: [],
-        mainLetter: "P",
-        letterList: "ANKLRIG",
-    },
-    dyn: {
-        point: 0,
-        currentWord: "",
-        correctWordList: [],
-    }
+export let gd = {
+    tryAgainMessage: [
+        "Yahhh.. Coba lagi!",
+        "Jangan menyerah!",
+        "Tetap semangat!",
+        "Hampir saja!",
+        "Kamu pasti bisa!",
+    ],
+    successMessages: [
+        "Bagus!",
+        "Hebat!",
+        "Mantap!",
+        "Keren!",
+        "Juara!",
+        "Oke!",
+        "Sip!",
+        "Yes!",
+        "Cihuy!",
+        "Top!",
+    ],
+    levelList: [
+        "Pemula",
+        "Menengah",
+        "Mahir",
+        "Profesional",
+        "Master",
+        "Grandmaster",
+    ],
+    levelDecorator: [
+        "level_1.png",
+        "level_2.png",
+        "level_3.png",
+        "level_4.png",
+        "level_5.png",
+        "level_6.png",
+    ],
+    todayDate: new Date().setHours(0, 0, 0, 0),
+    bigWordList: await importWords("./list_1.0.0_nospace.txt"),
+    smallWordList: [],
+    localStorageKey: "wordpad-str-00-0.12-record",
+    notifyInterval: 2000,
+    pointMultiplier: 1,
+    basePoint: [
+        22,
+        38,
+        56,
+        78,
+        120,
+        168,
+    ],
+    pointEachLevel: [],
+    mainLetter: "P",
+    letterList: "ANKLRIG",
 }
 
-gdt.sets.pointEachLevel = gdt.sets.basePoint.map((item) => item * gdt.sets.pointMultiplier);
-gdt.stt.smallWordList = gdt.stt.bigWordList.filter((word) => {
+export let gdp = {
+    point: 0,
+    currentWord: "",
+    correctWordList: [],
+}
+
+gd.pointEachLevel = gd.basePoint.map((item) => item * gd.pointMultiplier);
+gd.smallWordList = gd.bigWordList.filter((word) => {
     // Check if word includes center letter
-    if (!word.includes(gdt.sets.mainLetter.toLowerCase())) return false;
+    if (!word.includes(gd.mainLetter.toLowerCase())) return false;
     // Check if ALL letters in the word are from allowed set (center + outer letters)
-    const allowedLetters = [...gdt.sets.letterList.split(""), gdt.sets.mainLetter].map((letter) =>
+    const allowedLetters = [...gd.letterList.split(""), gd.mainLetter].map((letter) =>
         letter.toLowerCase()
     );
     for (let char of word) {
@@ -154,7 +151,7 @@ export class recordedPoint {
 
     static storeClass(recordItem) {
         this.allRecords.push(recordItem);
-        if (this.todayRecord === null && new Date(recordItem.date).setHours(0, 0, 0, 0) == gdt.stt.todayDate) {
+        if (this.todayRecord === null && new Date(recordItem.date).setHours(0, 0, 0, 0) == gd.todayDate) {
             this.todayRecord = recordItem;
         }
     }
@@ -164,17 +161,17 @@ export class recordedPoint {
     }
 
     static saveToLocalStorage() {
-        localStorage.setItem(gdt.sets.localStorageKey, JSON.stringify(this.allRecords));
+        localStorage.setItem(gd.localStorageKey, JSON.stringify(this.allRecords));
     }
 
     static loadLocalStorage(updatePoint, updateCorrectList) {
-        if (localStorage.getItem(gdt.sets.localStorageKey)) {
-            let _allRecords = JSON.parse(localStorage.getItem(gdt.sets.localStorageKey));
+        if (localStorage.getItem(gd.localStorageKey)) {
+            let _allRecords = JSON.parse(localStorage.getItem(gd.localStorageKey));
             _allRecords.forEach((item) => {
                 let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.levelName);
                 this.storeClass(_lclass);
 
-                if (new Date(item.date).setHours(0, 0, 0, 0) == gdt.stt.todayDate) {
+                if (new Date(item.date).setHours(0, 0, 0, 0) == gd.todayDate) {
                     this.todayRecord = _lclass;
                     updatePoint(item.point, true);
                     item.wordFound.forEach((word) => {
