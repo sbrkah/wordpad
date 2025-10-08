@@ -20,8 +20,7 @@ function updatePoint(point, firstLoad = false) {
     const _prevSecore = gdt.sets.pointEachLevel[_lvlIndex - 1] | 0;
 
     let _progressPercentage = ((gdt.dyn.point - _prevSecore) / _toNextLevel) * 100;
-    if (_progressPercentage >= 100) _progressPercentage = 100;
-    elm.progressBar.style.width = `${_progressPercentage}%`;
+    elm.progressBar.style.width = `${(gdt.dyn.point / gdt.sets.pointEachLevel[gdt.sets.pointEachLevel.length - 1]) * 100}%`;
     
     if (_progressPercentage >= 100 && elm.levelName.innerHTML != gdt.stt.levelList[-1]) {
         elm.levelName.innerHTML = gdt.stt.levelList[_lvlIndex + 1];
