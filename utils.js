@@ -16,3 +16,11 @@ export async function importWords(inputFile) {
         console.log(e);
     }
 }
+
+export function stringifyDate(date){
+    let _date = new Date(date);
+    let _day = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    let _month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    return `${_day[_date.getDay()]}, ${_date.getDate()} ${_month[_date.getMonth()]} ${_date.getFullYear()}`
+}

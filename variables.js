@@ -1,4 +1,4 @@
-import { importWords } from "./utils.js";
+import { importWords, stringifyDate } from "./utils.js";
 
 export let elm = {
     scoreText: document.getElementById("score"),
@@ -132,7 +132,7 @@ export class recordedPoint {
                     </div>
                 </div>
                 <div class="record-item-detail">
-                    <span class="dated">${this.date.toDateString()}</span>
+                    <span class="dated">${stringifyDate(this.date)}</span>
                     <div class="numpad-item-container">
                         <div class="numpad-item main">${this.mainLetter}</div>
                         ${this.letterList.split("").map((item) => `<div class="numpad-item">${item}</div>`).join("")}
