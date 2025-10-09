@@ -562,6 +562,14 @@ body {
     background-color: var(--cgreen-main);
 }
 
+.numpad:hover {
+    border: 2px solid var(--cgreen-main);
+}
+
+.numpad.main:hover {
+    border: 2px solid var(--cgreen-second);
+}
+
 .numpad.control {
     color: #000;
 }
