@@ -13,6 +13,26 @@ function prepareLetter(_letterList = gd.letterList) {
     elm.mainNumpad.setAttribute("data-letter", gd.mainLetter);
 }
 
+function loadVariables() {
+    elm.levelDecorator.forEach((decorator) => {
+        decorator.innerHTML = gd.levelDecorator[0];
+    });
+
+    elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
+        return `<div class="progress-dot ${index == 0 ? 'progress-dot--active' : ''}" id="level-${index + 1}"></div>`;
+    }).join("");
+}
+
+function fnOnLoad() {
+    prepareLetter();
+    loadVariables();
+    recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
+
+    if (recordedPoint.todayRecord == null) {
+        recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, elm.levelName.innerHTML));
+    }
+}
+
 function updatePoint(point, firstLoad = false) {
     gdp.point += point;
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
@@ -21,16 +41,16 @@ function updatePoint(point, firstLoad = false) {
 
     let _progressPercentage = ((gdp.point - _prevSecore) / _toNextLevel) * 100;
     elm.progressBar.style.width = `${(gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100}%`;
-    
+
     if (_progressPercentage >= 100 && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-        document.getElementById(`level-${_lvlIndex + 2}`).classList.add("filled");
-        
+        document.getElementById(`level-${_lvlIndex + 2}`).classList.add("progress-dot--active");
+
         // Change decoration at the right & left of level name
-        for(var i = 0; i < elm.levelDecorator.length; i++){
-            elm.levelDecorator[i].innerHTML = `<img src="./assets/${gd.levelDecorator[_lvlIndex + 1]}" alt="image decoration for level" />`
-        }
-        
+        elm.levelDecorator.forEach((decorator) => {
+            decorator.innerHTML = gd.levelDecorator[_lvlIndex + 1];
+        });
+
         setTimeout(() => {
             updatePoint(0);
         }, 550);
@@ -49,11 +69,11 @@ function updatePoint(point, firstLoad = false) {
 }
 
 function notifier(message, type = "info") {
-    let _extraClass = ["show"];
+    let _extraClass = ["notification--visible"];
     elm.notifyMessage.textContent = message;
 
     if (type == "success") {
-        _extraClass.push("success");
+        _extraClass.push("notification--success");
         let _point = gdp.currentWord.length * gd.pointMultiplier;
         elm.notifyMessage.textContent = `${gd.successMessages[Math.floor(Math.random() * gd.successMessages.length)]
             } + ${_point} point`;
@@ -73,8 +93,8 @@ function updateCorrectList(newWord) {
     if (!newWord) return;
 
     gdp.correctWordList.push(newWord);
-    elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word">${newWord}</div>`);
-    elm.fullWordContent.insertAdjacentHTML("afterbegin", `<div class="word-full">${newWord}</div>`);
+    elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word-item">${newWord}</div>`);
+    elm.fullWordContent.insertAdjacentHTML("afterbegin", `<div class="word-item__full-view">${newWord}</div>`);
 }
 
 function shuffleLetter() {
@@ -133,45 +153,44 @@ elm.allNumpad.forEach((numpad) => {
     numpad.addEventListener("click", handleNumpad);
 });
 
-prepareLetter();
-recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
-
-if (recordedPoint.todayRecord == null) {
-    recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, elm.levelName.innerHTML));
-}
-
 elm.scoreBtn.onclick = () => {
     elm.recordContainer.innerHTML = recordedPoint.getAllComponent();
-    elm.scoreContainer.classList.toggle("show");
+    elm.scoreContainer.classList.toggle("score-modal--visible");
 };
 
 elm.closeScoreBtn.onclick = () => {
-    elm.scoreContainer.classList.remove("show");
+    elm.scoreContainer.classList.remove("score-modal--visible");
 };
 
 window.addEventListener("click", (e) => {
-    if (elm.scoreContainer.classList.contains("show")) {
+    if (elm.scoreContainer.classList.contains("score-modal--visible")) {
         if (!elm.scoreContainer.contains(e.target) && !elm.scoreBtn.contains(e.target)) {
-            elm.scoreContainer.classList.remove("show");
+            elm.scoreContainer.classList.remove("score-modal--visible");
         }
     }
 
-    if (elm.fullWordContainer.classList.contains("full")) {
+    if (elm.fullWordContainer.classList.contains("words-panel__expanded--open")) {
         if (!elm.fullWordContainer.contains(e.target) && !elm.maximumBtn.contains(e.target)) {
-            elm.fullWordContainer.classList.remove("full");
+            elm.fullWordContainer.classList.remove("words-panel__expanded--open");
             elm.maximumReverseBtn.style.zIndex = 1;
         }
     }
 });
 
 elm.maximumBtn.onclick = () => {
-    elm.fullWordContainer.classList.toggle("full");
-    elm.maximumReverseBtn.style.zIndex = 66;
+    elm.fullWordContainer.classList.toggle("words-panel__expanded--open");
+
+    // Show button after animation to make it smoother
+    setTimeout(() => {
+        elm.maximumReverseBtn.style.zIndex = 66;
+    }, 200)
 };
 
 [elm.maximumReverseBtn, elm.minimumBtn].forEach((btn) => {
     btn.onclick = () => {
-        elm.fullWordContainer.classList.remove("full");
+        elm.fullWordContainer.classList.remove("words-panel__expanded--open");
         elm.maximumReverseBtn.style.zIndex = 1;
     }
 });
+
+fnOnLoad();

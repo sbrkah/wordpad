@@ -3,28 +3,29 @@ import { importWords, stringifyDate } from "./utils.js";
 export let elm = {
     scoreText: document.getElementById("score"),
     levelName: document.getElementById("level-name"),
-    levelDecorator: document.getElementsByClassName("level-decorator"),
+    levelDecorator: document.querySelectorAll(".level-indicator__decorator"),
     progressBar: document.getElementById("progress-bar"),
-    submitBtn: document.getElementById("submit-btn"),
-    deleteBtn: document.getElementById("delete-btn"),
-    shuffleBtn: document.getElementById("shuffle-btn"),
+    submitBtn: document.getElementById("submit-key"),
+    deleteBtn: document.getElementById("delete-key"),
+    shuffleBtn: document.getElementById("shuffle-key"),
     scoreBtn: document.getElementById("score-btn"),
     shareBtn: document.getElementById("share-btn"),
-    allNumpad: document.querySelectorAll(".numpad.letter"),
-    mainNumpad: document.querySelector(".numpad.main"),
-    regularNumpad: document.querySelectorAll(".numpad.letter:not(.main)"),
-    notifyContainer: document.getElementById("notify-container"),
-    notifyMessage: document.getElementById("nmessage"),
-    correctWordList: document.getElementById("word-content"),
-    closeScoreBtn: document.getElementById("score-close"),
-    scoreContainer: document.getElementById("score-container"),
-    recordContainer: document.getElementById("record-content"),
-    enteredWord: document.getElementById("entered-word"),
-    maximumBtn: document.getElementById("the-maximum"),
-    maximumReverseBtn: document.getElementById("the-maximum-reverse"),
-    minimumBtn: document.getElementById("the-minimum"),
-    fullWordContainer: document.getElementById("full-word-container"),
-    fullWordContent: document.getElementById("full-word-content"),
+    allNumpad: document.querySelectorAll(".key.key--letter"),
+    mainNumpad: document.querySelector(".key.key--primary"),
+    regularNumpad: document.querySelectorAll(".key.key--letter:not(.key--primary)"),
+    notifyContainer: document.getElementById("notification"),
+    notifyMessage: document.getElementById("notification-message"),
+    correctWordList: document.getElementById("words-compact-view"),
+    closeScoreBtn: document.getElementById("close-modal"),
+    scoreContainer: document.getElementById("score-modal"),
+    recordContainer: document.getElementById("score-records"),
+    enteredWord: document.getElementById("current-input"),
+    maximumBtn: document.getElementById("toggle-expand"),
+    maximumReverseBtn: document.getElementById("toggle-collapse"),
+    minimumBtn: document.getElementById("toggle-minimize"),
+    fullWordContainer: document.getElementById("words-full-view"),
+    fullWordContent: document.getElementById("words-list"),
+    progressTrackDots: document.querySelector(".progress-track__dots"),
 }
 
 export let gd = {
@@ -56,12 +57,12 @@ export let gd = {
         "Grandmaster",
     ],
     levelDecorator: [
-        "level_1.png",
-        "level_2.png",
-        "level_3.png",
-        "level_4.png",
-        "level_5.png",
-        "level_6.png",
+        `<i class="fa-solid fa-seedling"></i>`,
+        `<i class="fa-solid fa-leaf"></i>`,
+        `<i class="fa-solid fa-feather-pointed"></i>`,
+        `<i class="fa-solid fa-graduation-cap"></i>`,
+        `<i class="fa-solid fa-crow"></i>`,
+        `<i class="fa-solid fa-crown"></i>`,
     ],
     todayDate: new Date().setHours(0, 0, 0, 0),
     bigWordList: await importWords("./list_1.0.0_nospace.txt"),
@@ -120,22 +121,22 @@ export class recordedPoint {
     getComponent() {
         return `
             <div class="record-item">
-                <div class="record-item-container">
-                    <div class="record-item-point">
+                <div class="record-item__container">
+                    <div class="record-item__point">
                         <i class="fa-solid fa-feather-pointed"></i>
                         <h2 class="scored">${this.point}</h2>
                     </div>
-                    <div class="record-item-word">
+                    <div class="record-item__word-count">
                         Menemukan
-                        <span class="worded total">${this.wordFound.length}</span>
-                        <span class="worded">kata</span>
+                        <span class="record-item__word-count--total">${this.wordFound.length}</span>
+                        kata
                     </div>
                 </div>
-                <div class="record-item-detail">
-                    <span class="dated">${stringifyDate(this.date)}</span>
-                    <div class="numpad-item-container">
-                        <div class="numpad-item main">${this.mainLetter}</div>
-                        ${this.letterList.split("").map((item) => `<div class="numpad-item">${item}</div>`).join("")}
+                <div class="record-item__game-data">
+                    <span class="record-item__date">${stringifyDate(this.date)}</span>
+                    <div class="record-item__letters">
+                        <div class="record-item__letter record-item__letter--main">${this.mainLetter}</div>
+                        ${this.letterList.split("").map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
                     </div>
                 </div>
             </div>

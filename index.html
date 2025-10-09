@@ -14,128 +14,127 @@
 </head>
 
 <body>
-    <div class="topbar-container">
+    <div class="header">
         <div id="progress-bar"></div>
-        <div class="topbar fit">
-            <div class="topbar-logo">
+        <div class="header__content container">
+            <div class="header__brand">
                 <img src="./assets/icon.png" alt="Wordpad Logo" />
                 <span>Wordpad</span>
             </div>
-            <div class="topbar-menu">
-                <div class="has-popup" id="score-btn">
-                    <i class="fa-solid fa-chart-simple"></i>
-                    <div class="popup-content">Skor terbaikmu!</div>
+            <div class="header__actions">
+                <div class="tooltip-trigger" id="score-btn">
+                    <i class="fa-solid fa-trophy"></i>
+                    <div class="tooltip">Skor terbaikmu!</div>
                 </div>
-                <div class="has-popup" id="share-btn">
+                <!-- <div class="tooltip-trigger" id="share-btn">
                     <i class="fa-solid fa-share-nodes"></i>
-                    <div class="popup-content">Menyukai Wordpad? Bagikan pada teman!</div>
-                </div>
-                <div class="score-container">
-                    <span><i class="fa-solid fa-feather-pointed"></i> <span id="score">0</span></span>
+                    <div class="tooltip">Menyukai Wordpad? Bagikan pada teman!</div>
+                </div> -->
+                <div class="score-display">
+                    <span><i class="fa-solid fa-circle-dot"></i> <span id="score">0</span></span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="info-container fit">
-        <div class="level-container">
-            <div class="level-bar-container">
-                <div class="bar-container">
-                    <div class="level-line"></div>
-                    <div class="level-bar-dots filled" id="level-1"></div>
-                    <div class="level-bar-dots" id="level-2"></div>
-                    <div class="level-bar-dots" id="level-3"></div>
-                    <div class="level-bar-dots" id="level-4"></div>
-                    <div class="level-bar-dots" id="level-5"></div>
-                    <div class="level-bar-dots" id="level-6"></div>
+    
+    <div class="game-info container">
+        <div class="level-indicator">
+            <div class="level-indicator__track">
+                <div class="progress-track">
+                    <div class="progress-track__line"></div>
+                    <div class="progress-track__dots">
+                        <!-- Progress dots -->
+                    </div>
                 </div>
-                <div id="level-name-wrapper">
-                    <div class="level-decorator"><img src="./assets/level_1.png" alt="image decoration for level" /></div>
+                <div class="level-indicator__display">
+                    <div class="level-indicator__decorator level-indicator__decorator--flipped"> <!-- Font Awesome Icon --> </div>
                     <div id="level-name">Pemula</div>
-                    <div class="level-decorator flip"><img src="./assets/level_1.png" alt="image decoration for level" /></div>
+                    <div class="level-indicator__decorator"> <!-- Font Awesome Icon --> </div>
                 </div>
             </div>
         </div>
-        <div class="word-container">
-            <div id="full-word-container" class="word-content-container">
-                <div class="full-word-tittle">
+        
+        <div class="words-panel">
+            <div id="words-full-view" class="words-panel__expanded">
+                <div class="words-panel__header">
                     <i class="fas fa-file-word"></i>
                     <h4>Kata Ditemukan</h4>
                 </div>
-                <div id="full-word-content">
+                <div id="words-list">
                     <!-- word list -->
                 </div>
-                <div class="max-min-btn full minimize" id="the-minimum"><i class="fas fa-chevron-up"></i></div>
+                <div class="words-panel__toggle words-panel__toggle--minimize" id="toggle-minimize"><i class="fas fa-chevron-up"></i></div>
             </div>
-            <div id="word-content" class="word-content-container">
+            <div id="words-compact-view" class="words-panel__compact">
                 <!-- word list -->
                 <span>&nbsp</span>
             </div>
-            <div class="the-end"></div>
-            <div class="max-min-btn" id="the-maximum"><i class="fas fa-chevron-down"></i></div>
-            <div class="max-min-btn minimize" id="the-maximum-reverse"><i class="fas fa-chevron-up"></i></div>
+            <div class="words-panel__fade"></div>
+            <div class="words-panel__toggle" id="toggle-expand"><i class="fas fa-chevron-down"></i></div>
+            <div class="words-panel__toggle words-panel__toggle--minimize" id="toggle-collapse"><i class="fas fa-chevron-up"></i></div>
         </div>
-        <div id="notify-container" class="">
-            <span id="nmessage">Semoga berungga!</span>
+        
+        <div id="notification" class="notification">
+            <span id="notification-message">Semoga berungga!</span>
         </div>
-        <div id="score-container">
-            <div class="score-tittle">
+        
+        <div id="score-modal" class="score-modal">
+            <div class="score-modal__header">
                 <i class="fa-solid fa-chart-simple"></i>
                 Rekor Saya
             </div>
-            <div class="score-subtitle">
-                <span>Kau dewa kata?! Lihat seberapa hebat rekormu di sini — mulai dari skor, jumlah kata dan
-                    lainnya.</span>
+            <div class="score-modal__description">
+                <span>Kau dewa kata?! Lihat seberapa hebat rekormu di sini — mulai dari skor, jumlah kata dan lainnya.</span>
             </div>
-            <div id="record-content">
+            <div id="score-records" class="score-modal__records line-scrollbar">
                 <!-- record item -->
             </div>
-            <div class="score-footer">
+            <div class="score-modal__footer">
                 <span>*hanya menyimpan rekor game harian</span>
-                <div id="score-close">Tutup</div>
+                <div id="close-modal" class="score-modal__close">Tutup</div>
             </div>
         </div>
     </div>
-    <div class="main-container fit">
-        <div class="main-content">
-            <div class="keyboard-container">
-                <div id="entered-word"></div>
-                <div class="blinking-cursor"></div>
+    
+    <div class="game-area container">
+        <div class="game-board">
+            <div class="input-display">
+                <div id="current-input"></div>
+                <div class="input-display__cursor"></div>
             </div>
-            <div class="numpad-container">
-                <div class="numpad-column">
-                    <div class="numpad letter" data-letter="">T</div>
-                    <div class="numpad letter" data-letter="">E</div>
-                    <div class="numpad letter" data-letter="">S</div>
+            <div class="keyboard">
+                <div class="keyboard__row">
+                    <div class="key key--letter" data-letter="T">T</div>
+                    <div class="key key--letter" data-letter="E">E</div>
+                    <div class="key key--letter" data-letter="S">S</div>
                 </div>
-                <div class="numpad-column">
-                    <div class="numpad letter" data-letter="">L</div>
-                    <div class="numpad letter main" data-letter="">P</div>
-                    <div class="numpad letter" data-letter="">A</div>
+                <div class="keyboard__row">
+                    <div class="key key--letter" data-letter="L">L</div>
+                    <div class="key key--letter key--primary" data-letter="P">P</div>
+                    <div class="key key--letter" data-letter="A">A</div>
                 </div>
-                <div class="numpad-column">
-                    <div class="numpad letter" data-letter="">K</div>
-                    <div class="numpad letter" data-letter="">B</div>
-                    <div class="numpad control" id="delete-btn"><i class="fas fa-backspace"></i></div>
+                <div class="keyboard__row">
+                    <div class="key key--letter" data-letter="K">K</div>
+                    <div class="key key--letter" data-letter="B">B</div>
+                    <div class="key key--action" id="delete-key"><i class="fas fa-backspace"></i></div>
                 </div>
-                <div class="numpad-column">
-                    <div class="numpad control" id="shuffle-btn"><i class="fas fa-shuffle"></i></div>
-                    <div class="numpad control" id="submit-btn">Submit</div>
+                <div class="keyboard__row">
+                    <div class="key key--action" id="shuffle-key"><i class="fas fa-shuffle"></i></div>
+                    <div class="key key--submit" id="submit-key">Submit</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="footer-container fit">
+    
+    <div class="footer container">
         <img src="./assets/decorator.png" alt="image decoration of word" />
-        <div class="footer-content">
-            Rangkai kata dengan huruf yang disediakan. Harus mengandung huruf utama yang (bagian
-            tengah). Berapa kata yang dapat kamu rangkai?!
+        <div class="footer__content">
+            Rangkai kata dengan huruf yang disediakan. Harus mengandung huruf utama yang (bagian tengah). Berapa kata yang dapat kamu rangkai?!
         </div>
-        <div id="version">
-            Wordpad v0.12
+        <div id="app-version" class="footer__version">
+            Wordpad v0.32
         </div>
     </div>
 
     <script type="module" src="index.js"></script>
 </body>
-
-</html>
