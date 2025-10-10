@@ -21,7 +21,7 @@ body {
     flex-direction: column;
     height: 100vh;
     max-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .container {
@@ -31,11 +31,17 @@ body {
 
 /* ===== HEADER COMPONENT ===== */
 .header {
+    top: 0;
+    position: sticky;
+    z-index: 999;
+}
+
+.header__wrapper{
+    position: relative;
     background-color: var(--color-accent);
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
 #progress-bar {
@@ -342,7 +348,7 @@ body {
 
 /* ===== SCORE MODAL COMPONENT ===== */
 .score-modal {
-    display: flex;
+    display: none;
     flex-direction: column;
     position: absolute;
     left: 50%;
@@ -363,6 +369,7 @@ body {
 
 .score-modal.score-modal--visible {
     transform: translate(-50%, -5%);
+    display: flex;
 }
 
 .score-modal span {
@@ -485,7 +492,7 @@ body {
     align-items: center;
     margin-top: 12px;
     margin-bottom: 1.5%;
-    min-height: 60vh;
+    min-height: calc(0.58 * 1080px);
 }
 
 .game-board {
