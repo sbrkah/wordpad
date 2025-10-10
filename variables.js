@@ -109,13 +109,14 @@ export class recordedPoint {
     static allRecords = [];
     static todayRecord = null;
 
-    constructor(point, mainLetter, letterList, wordFound, date, levelName = "Pemulai") {
+    constructor(point, mainLetter, letterList, wordFound, date, basePoint, levelName = "Pemulai") {
         this.point = point;
         this.mainLetter = mainLetter;
         this.letterList = letterList;
         this.wordFound = wordFound;
         this.levelName = levelName;
         this.date = new Date(date);
+        this.basePoint = basePoint;
     }
 
     getComponent() {
@@ -136,7 +137,7 @@ export class recordedPoint {
                     <span class="record-item__date">${stringifyDate(this.date)}</span>
                     <div class="record-item__letters">
                         <div class="record-item__letter record-item__letter--main">${this.mainLetter}</div>
-                        ${this.letterList.split("").map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
+                        ${this.letterList.split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
                     </div>
                 </div>
             </div>
@@ -157,8 +158,8 @@ export class recordedPoint {
         }
     }
 
-    static store(point, mainLetter, letterList, wordFound, date, levelName) {
-        this.storeClass(new recordedPoint(point, mainLetter, letterList, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
+    static store(point, mainLetter, letterList, wordFound, date, basePoint, levelName) {
+        this.storeClass(new recordedPoint(point, mainLetter, letterList, basePoint, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
     }
 
     static saveToLocalStorage() {
@@ -169,7 +170,7 @@ export class recordedPoint {
         if (localStorage.getItem(gd.localStorageKey)) {
             let _allRecords = JSON.parse(localStorage.getItem(gd.localStorageKey));
             _allRecords.forEach((item) => {
-                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.levelName);
+                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.basePoint, item.levelName);
                 this.storeClass(_lclass);
 
                 if (new Date(item.date).setHours(0, 0, 0, 0) == gd.todayDate) {

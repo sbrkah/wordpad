@@ -29,7 +29,7 @@ function fnOnLoad() {
     recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
     if (recordedPoint.todayRecord == null) {
-        recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, elm.levelName.innerHTML));
+        recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, gd.basePoint, elm.levelName.innerHTML));
     }
 }
 
