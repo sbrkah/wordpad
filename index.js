@@ -19,9 +19,7 @@ function loadVariables() {
     });
 
     elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-        return `
-        <div data-tooltip="${gd.basePoint[index]} poin" class="progress-dot tooltip-trigger ${index == 0 ? 'progress-dot--active' : ''}" id="level-${index + 1}">
-        </div>`;
+        return `<div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0} poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}"></div>`;
     }).join("");
 
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
@@ -37,9 +35,11 @@ function addTooltipListener() {
             }
         });
 
+        // Prevent level-dot bug : mouse move down will choose previous dots
         trigger.addEventListener("mouseleave", () => {
             _freeze = true;
             trigger.classList.remove("tooltip--visible");
+            
             setTimeout(() => {
                 _freeze = false;
             }, 25);
@@ -69,7 +69,7 @@ function updatePoint(point, firstLoad = false) {
 
     if (_progressPercentage >= 100 && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-        document.getElementById(`level-${_lvlIndex + 2}`).classList.add("progress-dot--active");
+        document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
         // Change decoration at the right & left of level name
         elm.levelDecorator.forEach((decorator) => {

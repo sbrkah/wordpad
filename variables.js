@@ -77,7 +77,6 @@ export let gd = {
         56,
         78,
         120,
-        168,
     ],
     pointEachLevel: [],
     mainLetter: "P",
