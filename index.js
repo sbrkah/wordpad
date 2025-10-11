@@ -164,7 +164,7 @@ elm.submitBtn.addEventListener("click", () => {
         return;
     }
 
-    if (!gd.smallWordList.includes(gdp.currentWord.toLowerCase())) {
+    if (!gd.smallWords.includes(gdp.currentWord.toLowerCase())) {
         notifier(`Tidak ditemukan, ${gd.tryAgainMessage[Math.floor(Math.random() * gd.tryAgainMessage.length)]}`);
         updateEnteredWord("");
         return;

@@ -66,8 +66,8 @@ export let gd = {
         `<i class="fa-solid fa-crown"></i>`,
     ],
     todayDate: new Date().setHours(0, 0, 0, 0),
-    bigWordList: await importWords("./list_1.0.0_nospace.txt"),
-    smallWordList: [],
+    bigWords: await importWords("./list_1.0.0_nospace.txt"),
+    smallWords: [],
     localStorageKey: "wordpad-str-00-0.12-record",
     notifyInterval: 2000,
     pointMultiplier: 1,
@@ -90,7 +90,7 @@ export let gdp = {
 }
 
 gd.pointEachLevel = gd.basePoint.map((item) => item * gd.pointMultiplier);
-gd.smallWordList = gd.bigWordList.filter((word) => {
+gd.smallWords = gd.bigWords.filter((word) => {
     // Check if word includes center letter
     if (!word.includes(gd.mainLetter.toLowerCase())) return false;
     // Check if ALL letters in the word are from allowed set (center + outer letters)
