@@ -35,6 +35,7 @@ body {
     top: 0;
     position: sticky;
     z-index: 999;
+    margin-bottom: 16px;
 }
 
 .header__wrapper{
@@ -98,27 +99,27 @@ body {
     cursor: pointer;
 }
 
-.tooltip-trigger::after {
-    content: attr(data-tooltip);
+.tooltip {
     position: absolute;
     top: 120%;
-    left: 200%;
+    left: 120%;
     background-color: #fff;
     color: var(--color-primary);
     padding: 6px 8px;
     border-radius: 6px;
-    opacity: 0;
     z-index: 9;
     font-size: smaller;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 4px;
     box-shadow: var(--box-shadow);
 }
 
-.tooltip--visible::after {
+.tooltip--visible {
     height: auto !important;
-    opacity: 1 !important;
+    width: max-content !important;
+    display: flex !important;
 }
 
 /* ===== GAME INFO COMPONENT ===== */
@@ -128,7 +129,7 @@ body {
 
 /* ===== LEVEL INDICATOR COMPONENT ===== */
 .level-indicator {
-    margin: 16px 0;
+    display: none;
 }
 
 .level-indicator__track {
@@ -182,12 +183,12 @@ body {
     position: absolute;
     display: flex;
     top: 50%;
-    right: 0%;
-    transform: translate(0%, -50%);
+    right: 50%;
+    transform: translate(50%, -50%);
 }
 
 #level-name {
-    margin: 0 3.3px;
+    margin: 0 6.6px;
 }
 
 .level-indicator__decorator {

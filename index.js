@@ -18,31 +18,40 @@ function loadVariables() {
         decorator.innerHTML = gd.levelDecorator[0];
     });
 
-    elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-        return `<div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0}&nbsp;poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}"></div>`;
-    }).join("");
+    // Currently no-use, element hidden
+    // elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
+    //     return `
+    //     <div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0}&nbsp;poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}">
+    //         <div class="tooltip">${gd.basePoint[index - 1]}&nbsp;poin</div>
+    //     </div>`;
+    // }).join("");
+
+    elm.scoreDisplay.querySelector(".tooltip").innerHTML = gd.basePoint.map((point, index) => {
+        return `
+            <div>
+                ${point}&nbsp;Poin&nbsp;:&nbsp;${gd.levelDecorator[index + 1]}&nbsp;${gd.levelList[index + 1]}
+            </div>`;
+    }).join("")
 
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
 }
 
 function addTooltipListener() {
-    let _freeze = false;
-
     elm.tooltipTriggers.forEach((trigger) => {
+        let _tooltip = trigger.querySelector(".tooltip");
+
+        // beware choose-prev bug : mouse move down will choose previous element (on js generated element)
+        // use timeout as requirement to turn on tooltip
         trigger.addEventListener("mouseover", () => {
-            if (!_freeze) {
-                trigger.classList.toggle("tooltip--visible");
-            }
+            _tooltip.classList.toggle("tooltip--visible");
         });
 
-        // Prevent level-dot bug : mouse move down will choose previous dots
         trigger.addEventListener("mouseleave", () => {
-            _freeze = true;
-            trigger.classList.remove("tooltip--visible");
-            
-            setTimeout(() => {
-                _freeze = false;
-            }, 25);
+            _tooltip.classList.remove("tooltip--visible");
+        });
+
+        _tooltip.addEventListener("mouseover", () => {
+            _tooltip.classList.remove("tooltip--visible");
         });
     });
 }
@@ -66,7 +75,9 @@ function updatePoint(point, firstLoad = false) {
     
     if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-        document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
+
+        // Currently no-use, element hidden
+        // document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
         // Change decoration at the right & left of level name
         elm.levelDecorator.forEach((decorator) => {

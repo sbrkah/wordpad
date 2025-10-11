@@ -27,6 +27,7 @@ export let elm = {
     fullWordContent: document.getElementById("words-list"),
     progressTrackDots: document.querySelector(".progress-track__dots"),
     tooltipTriggers: document.querySelectorAll(".tooltip-trigger"),
+    scoreDisplay: document.querySelector(".score-display"),
 }
 
 export let gd = {
