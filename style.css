@@ -105,7 +105,7 @@ body {
     left: 200%;
     background-color: #fff;
     color: var(--color-primary);
-    padding: 6px 4.4px;
+    padding: 6px 8px;
     border-radius: 6px;
     opacity: 0;
     z-index: 9;
@@ -117,7 +117,6 @@ body {
 }
 
 .tooltip--visible::after {
-    width: 120px !important;
     height: auto !important;
     opacity: 1 !important;
 }

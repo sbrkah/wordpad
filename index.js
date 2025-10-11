@@ -19,7 +19,7 @@ function loadVariables() {
     });
 
     elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-        return `<div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0} poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}"></div>`;
+        return `<div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0}&nbsp;poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}"></div>`;
     }).join("");
 
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
