@@ -61,13 +61,10 @@ function fnOnLoad() {
 function updatePoint(point, firstLoad = false) {
     gdp.point += point;
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
-    const _toNextLevel = gd.pointEachLevel[_lvlIndex];
-    const _prevSecore = gd.pointEachLevel[_lvlIndex - 1] | 0;
 
-    let _progressPercentage = ((gdp.point - _prevSecore) / _toNextLevel) * 100;
     elm.progressBar.style.width = `${(gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100}%`;
-
-    if (_progressPercentage >= 100 && elm.levelName.innerHTML != gd.levelList[-1]) {
+    
+    if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
         document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
