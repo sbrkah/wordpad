@@ -1,7 +1,7 @@
 import { elm, gd, gdp, recordedPoint } from "./variables.js";
 import { toCaseSensitive } from "./utils.js";
 
-function prepareLetter(_letterList = gd.letterList) {
+function prepLetter(_letterList = gd.letterList) {
     let _letterArray = _letterList.split("");
     elm.regularNumpad.forEach((letterBtn) => {
         let _letter = _letterArray.shift();
@@ -19,13 +19,38 @@ function loadVariables() {
     });
 
     elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-        return `<div class="progress-dot ${index == 0 ? 'progress-dot--active' : ''}" id="level-${index + 1}"></div>`;
+        return `
+        <div data-tooltip="${gd.basePoint[index]} poin" class="progress-dot tooltip-trigger ${index == 0 ? 'progress-dot--active' : ''}" id="level-${index + 1}">
+        </div>`;
     }).join("");
+
+    elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
+}
+
+function addTooltipListener() {
+    let _freeze = false;
+
+    elm.tooltipTriggers.forEach((trigger) => {
+        trigger.addEventListener("mouseover", () => {
+            if (!_freeze) {
+                trigger.classList.toggle("tooltip--visible");
+            }
+        });
+
+        trigger.addEventListener("mouseleave", () => {
+            _freeze = true;
+            trigger.classList.remove("tooltip--visible");
+            setTimeout(() => {
+                _freeze = false;
+            }, 25);
+        });
+    });
 }
 
 function fnOnLoad() {
-    prepareLetter();
+    prepLetter();
     loadVariables();
+    addTooltipListener();
     recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
     if (recordedPoint.todayRecord == null) {

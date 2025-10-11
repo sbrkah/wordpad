@@ -7,6 +7,7 @@
     --color-error: #ff5a5a;
     --color-progress: var(--color-error);
     --container-width: 601px;
+    --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 * {
@@ -97,25 +98,28 @@ body {
     cursor: pointer;
 }
 
-.tooltip-trigger:hover .tooltip {
-    opacity: 1;
-}
-
-.tooltip {
+.tooltip-trigger::after {
+    content: attr(data-tooltip);
     position: absolute;
-    top: 50%; 
-    left: 100%;
-    transform: translateY(-50%);
+    top: 120%;
+    left: 200%;
     background-color: #fff;
     color: var(--color-primary);
-    padding: 6px 0;
-    border-radius: 4px;
-    width: 250px;
+    padding: 6px 4.4px;
+    border-radius: 6px;
     opacity: 0;
     z-index: 9;
     font-size: smaller;
-    transition: opacity 0.3s ease;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--box-shadow);
+}
+
+.tooltip--visible::after {
+    width: 120px !important;
+    height: auto !important;
+    opacity: 1 !important;
 }
 
 /* ===== GAME INFO COMPONENT ===== */
