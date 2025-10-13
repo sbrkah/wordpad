@@ -1,4 +1,4 @@
-import { importWords, stringifyDate } from "./utils.js";
+import { importSets, stringifyDate } from "./utils.js";
 
 export let elm = {
     scoreText: document.getElementById("score"),
@@ -67,8 +67,8 @@ export let gd = {
         `<i class="fa-solid fa-crown"></i>`,
     ],
     todayDate: new Date().setHours(0, 0, 0, 0),
-    bigWords: await importWords("./list_1.0.0_nospace.txt"),
-    smallWords: [],
+    bigSets: await importSets("./hash_1.0.0.txt"),
+    smallSets: [],
     localStorageKey: "wordpad-str-00-0.12-record",
     notifyInterval: 2000,
     pointMultiplier: 1,
@@ -91,20 +91,15 @@ export let gdp = {
 }
 
 gd.pointEachLevel = gd.basePoint.map((item) => item * gd.pointMultiplier);
-gd.smallWords = gd.bigWords.filter((word) => {
-    // Check if word includes center letter
-    if (!word.includes(gd.mainLetter.toLowerCase())) return false;
-    // Check if ALL letters in the word are from allowed set (center + outer letters)
-    const allowedLetters = [...gd.letterList.split(""), gd.mainLetter].map((letter) =>
-        letter.toLowerCase()
-    );
-    for (let char of word) {
-        if (!allowedLetters.includes(char)) {
-            return false;
-        }
-    }
-    return true;
-});
+
+const allowedLetters = [gd.mainLetter, ...gd.letterList.split("")].map((letter) => letter.toLowerCase());
+const isValidSet = (wordsets) => {
+    let letter = [...wordsets];
+    return wordsets.has(gd.mainLetter.toLowerCase()) && letter.every((char) => allowedLetters.includes(char));
+}
+gd.smallSets = gd.bigSets
+    .filter((item) => isValidSet(new Set(item.set)))
+    .map(item => item.hash);
 
 export class recordedPoint {
     static allRecords = [];

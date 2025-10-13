@@ -172,7 +172,9 @@ elm.submitBtn.addEventListener("click", () => {
         return;
     }
 
-    if (!gd.smallWords.includes(gdp.currentWord.toLowerCase())) {
+    const _hex = SHA256.createHash().update(gdp.currentWord.toLowerCase()).digest("hex");
+
+    if (!gd.smallSets.includes(_hex)) {
         notifier(`Tidak ditemukan, ${gd.tryAgainMessage[Math.floor(Math.random() * gd.tryAgainMessage.length)]}`);
         updateEnteredWord("");
         return;

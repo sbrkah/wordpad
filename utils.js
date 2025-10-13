@@ -17,6 +17,16 @@ export async function importWords(inputFile) {
     }
 }
 
+export async function importSets(inputFile) {
+    try {
+        const response = await fetch(inputFile);
+        const text = await response.text();
+        return JSON.parse(text);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export function stringifyDate(date){
     let _date = new Date(date);
     let _day = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
