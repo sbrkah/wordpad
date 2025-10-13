@@ -1,5 +1,6 @@
 import { importSets, stringifyDate } from "./utils.js";
 
+export const url = "https://sbrkah.github.io/wordpad-be/api/daily-set.json";
 export let elm = {
     scoreText: document.getElementById("score"),
     levelName: document.getElementById("level-name"),
@@ -81,7 +82,7 @@ export let gd = {
     ],
     pointEachLevel: [],
     mainLetter: "P",
-    letterList: "ANKLRIG",
+    builderLetter: "ANKLRIG",
 }
 
 export let gdp = {
@@ -90,12 +91,13 @@ export let gdp = {
     correctWordList: [],
 }
 
+Object.assign(gd, await fetch(url).then(res => res.json()));
 gd.pointEachLevel = gd.basePoint.map((item) => item * gd.pointMultiplier);
 
-const allowedLetters = [gd.mainLetter, ...gd.letterList.split("")].map((letter) => letter.toLowerCase());
+const allowedLetters = [gd.mainLetter, ...gd.builderLetter.split("")];
 const isValidSet = (wordsets) => {
     let letter = [...wordsets];
-    return wordsets.has(gd.mainLetter.toLowerCase()) && letter.every((char) => allowedLetters.includes(char));
+    return wordsets.has(gd.mainLetter) && letter.every((char) => allowedLetters.includes(char));
 }
 gd.smallSets = gd.bigSets
     .filter((item) => isValidSet(new Set(item.set)))
@@ -105,10 +107,10 @@ export class recordedPoint {
     static allRecords = [];
     static todayRecord = null;
 
-    constructor(point, mainLetter, letterList, wordFound, date, basePoint, levelName = "Pemulai") {
+    constructor(point, mainLetter, builderLetter, wordFound, date, basePoint, levelName = "Pemulai") {
         this.point = point;
         this.mainLetter = mainLetter;
-        this.letterList = letterList;
+        this.builderLetter = builderLetter;
         this.wordFound = wordFound;
         this.levelName = levelName;
         this.date = new Date(date);
@@ -133,7 +135,7 @@ export class recordedPoint {
                     <span class="record-item__date">${stringifyDate(this.date)}</span>
                     <div class="record-item__letters">
                         <div class="record-item__letter record-item__letter--main">${this.mainLetter}</div>
-                        ${this.letterList.split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
+                        ${this.builderLetter.split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
                     </div>
                 </div>
             </div>
@@ -154,8 +156,8 @@ export class recordedPoint {
         }
     }
 
-    static store(point, mainLetter, letterList, wordFound, date, basePoint, levelName) {
-        this.storeClass(new recordedPoint(point, mainLetter, letterList, basePoint, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
+    static store(point, mainLetter, builderLetter, wordFound, date, basePoint, levelName) {
+        this.storeClass(new recordedPoint(point, mainLetter, builderLetter, basePoint, wordFound, new Date(date).setHours(0, 0, 0, 0), levelName));
     }
 
     static saveToLocalStorage() {
@@ -166,7 +168,7 @@ export class recordedPoint {
         if (localStorage.getItem(gd.localStorageKey)) {
             let _allRecords = JSON.parse(localStorage.getItem(gd.localStorageKey));
             _allRecords.forEach((item) => {
-                let _lclass = new recordedPoint(item.point, item.mainLetter, item.letterList, item.wordFound, item.date, item.basePoint, item.levelName);
+                let _lclass = new recordedPoint(item.point, item.mainLetter, item.builderLetter, item.wordFound, item.date, item.basePoint, item.levelName);
                 this.storeClass(_lclass);
 
                 if (new Date(item.date).setHours(0, 0, 0, 0) == gd.todayDate) {

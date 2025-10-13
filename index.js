@@ -1,16 +1,16 @@
 import { elm, gd, gdp, recordedPoint } from "./variables.js";
 import { toCaseSensitive } from "./utils.js";
 
-function prepLetter(_letterList = gd.letterList) {
-    let _letterArray = _letterList.split("");
+function prepLetter(_builderLetter = gd.builderLetter) {
+    let _letterArray = _builderLetter.toUpperCase().split("");
     elm.regularNumpad.forEach((letterBtn) => {
         let _letter = _letterArray.shift();
         letterBtn.innerHTML = _letter;
         letterBtn.setAttribute("data-letter", _letter);
     });
 
-    elm.mainNumpad.innerHTML = gd.mainLetter;
-    elm.mainNumpad.setAttribute("data-letter", gd.mainLetter);
+    elm.mainNumpad.innerHTML = gd.mainLetter.toUpperCase();
+    elm.mainNumpad.setAttribute("data-letter", gd.mainLetter.toUpperCase());
 }
 
 function loadVariables() {
@@ -63,7 +63,7 @@ function fnOnLoad() {
     recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
     if (recordedPoint.todayRecord == null) {
-        recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.letterList, [], gd.todayDate, gd.basePoint, elm.levelName.innerHTML));
+        recordedPoint.storeClass(new recordedPoint(gdp.point, gd.mainLetter, gd.builderLetter, [], gd.todayDate, gd.basePoint, elm.levelName.innerHTML));
     }
 }
 
@@ -131,10 +131,10 @@ function updateCorrectList(newWord) {
 }
 
 function shuffleLetter() {
-    let _letterArray = gd.letterList.split("");
+    let _letterArray = gd.builderLetter.split("");
     _letterArray.sort(() => Math.random() - 0.5);
-    gd.letterList = _letterArray.join("");
-    prepareLetter(gd.letterList);
+    gd.builderLetter = _letterArray.join("");
+    prepLetter(gd.builderLetter);
 }
 
 function handleNumpad(event) {
