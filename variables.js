@@ -1,6 +1,6 @@
 import { importSets, stringifyDate } from "./utils.js";
 
-export const url = "https://sbrkah.github.io/wordpad-be/api/daily-set.json";
+export const url = "./api/daily-set.json";
 export let elm = {
     scoreText: document.getElementById("score"),
     levelName: document.getElementById("level-name"),
