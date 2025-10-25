@@ -246,6 +246,10 @@ body {
     z-index: 6;
 }
 
+#toggle-minimize:hover, #toggle-expand:hover {
+    color: var(--color-primary);
+}
+
 #toggle-collapse {
     color: #000;
     bottom: -9px;

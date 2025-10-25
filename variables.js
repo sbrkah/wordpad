@@ -1,6 +1,6 @@
 import { importSets, stringifyDate } from "./utils.js";
 
-export const url = "./api/daily-set.json";
+export const url = "https://sbrkah.github.io/wordpad-be/api/daily-set.json";
 export let elm = {
     scoreText: document.getElementById("score"),
     levelName: document.getElementById("level-name"),
@@ -134,8 +134,8 @@ export class recordedPoint {
                 <div class="record-item__game-data">
                     <span class="record-item__date">${stringifyDate(this.date)}</span>
                     <div class="record-item__letters">
-                        <div class="record-item__letter record-item__letter--main">${this.mainLetter}</div>
-                        ${this.builderLetter.split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
+                        <div class="record-item__letter record-item__letter--main">${this.mainLetter.toUpperCase()}</div>
+                        ${this.builderLetter.toUpperCase().split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
                     </div>
                 </div>
             </div>
