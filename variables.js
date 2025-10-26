@@ -68,7 +68,7 @@ export let gd = {
         `<i class="fa-solid fa-crown"></i>`,
     ],
     todayDate: new Date().setHours(0, 0, 0, 0),
-    bigSets: await importSets("./hash_1.0.0.txt"),
+    bigSets: await importSets("./hash_1.0.1.array.txt", true),
     smallSets: [],
     localStorageKey: "wordpad-str-00-0.12-record",
     notifyInterval: 2000,

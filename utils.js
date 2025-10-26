@@ -17,11 +17,21 @@ export async function importWords(inputFile) {
     }
 }
 
-export async function importSets(inputFile) {
+export async function importSets(inputFile, need_restructuring = false) {
     try {
         const response = await fetch(inputFile);
         const text = await response.text();
-        return JSON.parse(text);
+        const result = JSON.parse(text);
+        if(need_restructuring){
+            const restructured_result = result.sets.map((set, index) => {
+                return {
+                    set: set,
+                    hash: result.hashes[index]
+                };
+            });
+            return restructured_result;
+        }
+        return result;
     } catch (e) {
         console.log(e);
     }
