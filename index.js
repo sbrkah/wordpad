@@ -1,5 +1,5 @@
 import { elm, gd, gdp, recordedPoint } from "./variables.js";
-import { toCaseSensitive } from "./utils.js";
+import { toCaseSensitive, nilia } from "./utils.js";
 
 function prepLetter(_builderLetter = gd.builderLetter) {
     let _letterArray = _builderLetter.toUpperCase().split("");
@@ -26,7 +26,7 @@ function loadVariables() {
     //     </div>`;
     // }).join("");
 
-    elm.scoreDisplay.querySelector(".tooltip").innerHTML = gd.basePoint.map((point, index) => {
+    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(gd.basePoint).map((point, index) => {
         return `
             <div>
                 ${point}&nbsp;Poin&nbsp;:&nbsp;${gd.levelDecorator[index + 1]}&nbsp;${gd.levelList[index + 1]}
@@ -103,7 +103,7 @@ function updatePoint(point, firstLoad = false) {
 
 function notifier(message, type = "info") {
     let _extraClass = ["notification--visible"];
-    elm.notifyMessage.textContent = message;
+    elm.notifyMessage.innerHTML = message;
 
     if (type == "success") {
         _extraClass.push("notification--success");
@@ -157,17 +157,17 @@ elm.deleteBtn.addEventListener("click", () => {
 
 elm.submitBtn.addEventListener("click", () => {
     if (!gdp.currentWord.toLowerCase().includes(gd.mainLetter.toLowerCase())) {
-        notifier(`Harus mengandung huruf utama '${gd.mainLetter}'!`);
+        notifier(`Harus&nbsp;mengandung&nbsp;huruf&nbsp;utama&nbsp;'${gd.mainLetter.toUpperCase()}'!`);
         return;
     }
 
     if (gdp.currentWord.length <= 3) {
-        notifier(`Terlalu pendek!`);
+        notifier(`Terlalu&nbsp;pendek!`);
         return;
     }
 
     if (gdp.correctWordList.includes(toCaseSensitive(gdp.currentWord))) {
-        notifier(`Kata sudah ditemukan!`);
+        notifier(`Kata&nbsp;sudah&nbsp;ditemukan!`);
         updateEnteredWord("");
         return;
     }
@@ -175,7 +175,7 @@ elm.submitBtn.addEventListener("click", () => {
     const _hex = SHA256.createHash().update(gdp.currentWord.toLowerCase()).digest("hex");
 
     if (!gd.smallSets.includes(_hex)) {
-        notifier(`Tidak ditemukan, ${gd.tryAgainMessage[Math.floor(Math.random() * gd.tryAgainMessage.length)]}`);
+        notifier(`Tidak&nbsp;ditemukan, ${gd.tryAgainMessage[Math.floor(Math.random() * gd.tryAgainMessage.length)]}`);
         updateEnteredWord("");
         return;
     }
@@ -220,6 +220,10 @@ elm.maximumBtn.onclick = () => {
         elm.maximumReverseBtn.style.zIndex = 66;
     }, 200)
 };
+
+elm.changeTheme.onclick = () => {
+    document.body.dataset.theme = document.body.dataset.theme == "dark" ? "light" : "dark";
+}
 
 [elm.maximumReverseBtn, elm.minimumBtn].forEach((btn) => {
     btn.onclick = () => {

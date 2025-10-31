@@ -29,6 +29,7 @@ export let elm = {
     progressTrackDots: document.querySelector(".progress-track__dots"),
     tooltipTriggers: document.querySelectorAll(".tooltip-trigger"),
     scoreDisplay: document.querySelector(".score-display"),
+    changeTheme: document.getElementById("theme-btn"),
 }
 
 export let gd = {
@@ -126,9 +127,7 @@ export class recordedPoint {
                         <h2 class="scored">${this.point}</h2>
                     </div>
                     <div class="record-item__word-count">
-                        Menemukan
-                        <span class="record-item__word-count--total">${this.wordFound.length}</span>
-                        kata
+                        Berhasil menemukan <span class="record-item__word-count--total">${this.wordFound.length}</span> Kata
                     </div>
                 </div>
                 <div class="record-item__game-data">

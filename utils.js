@@ -44,3 +44,19 @@ export function stringifyDate(date){
 
     return `${_day[_date.getDay()]}, ${_date.getDate()} ${_month[_date.getMonth()]} ${_date.getFullYear()}`
 }
+
+// Normalize INT Length in array -> string
+export function nilia(arrayOfInt){
+    try{
+        const normalized = [];
+        const len = String(Math.max(...arrayOfInt)).length;
+        arrayOfInt.forEach(el => {
+            normalized.push('&nbsp;'.repeat(len - String(el).length) + String(el));
+        });
+
+        return normalized;
+    }
+    catch(e){
+        
+    }
+}
