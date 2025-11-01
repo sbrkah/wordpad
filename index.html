@@ -18,34 +18,35 @@
     <div class="header">
         <div class="header__wrapper">
             <div id="progress-bar"></div>
-        <div class="header__content container">
-            <div class="header__brand">
-                <img src="./assets/icon.png" alt="Wordpad Logo" />
-                <span>Wordpad</span>
-            </div>
-            <div class="level-indicator__display">
-                <div class="level-indicator__decorator level-indicator__decorator--flipped"> <!-- Font Awesome Icon --> </div>
-                <div id="level-name">Pemula</div>
-                <div class="level-indicator__decorator"> <!-- Font Awesome Icon --> </div>
-            </div>
-            <div class="header__actions">
-                <div class="tooltip-trigger" id="score-btn" data-tooltip="Skor&nbsp;terbaikmu!">
-                    <i class="fa-solid fa-trophy"></i>
-                    <div class="tooltip">Papan Skor</div>
-                    <br />
+            <div class="header__content container">
+                <div class="header__brand">
+                    <img src="./assets/icon.png" alt="Wordpad Logo" />
+                    <span>Wordpad</span>
                 </div>
-                <div class="tooltip-trigger" id="theme-btn" data-tooltip="Ganti&nbsp;Tema">
-                    <i class="fa-solid fa-palette"></i>
-                    <div class="tooltip">Ganti Tema</div>
-                    <br />
+                <div class="level-indicator__display">
+                    <div class="level-indicator__decorator level-indicator__decorator--flipped"> <!-- Font Awesome Icon --> </div>
+                    <div id="level-name">Pemula</div>
+                    <div class="level-indicator__decorator"> <!-- Font Awesome Icon --> </div>
                 </div>
-                <!-- <div class="tooltip-trigger" id="share-btn">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <div class="tooltip">Menyukai Wordpad? Bagikan pada teman!</div>
-                </div> -->
-                <div class="score-display tooltip-trigger" data-tooltip="">
-                    <span><i class="fa-solid fa-circle-dot"></i> <span id="score">0</span></span>
-                    <div class="tooltip"></div>
+                <div class="header__actions">
+                    <div class="tooltip-trigger" id="theme-btn" data-tooltip="Ganti&nbsp;Tema">
+                        <i class="fa-solid fa-sun" id="theme-btn__icon"></i>
+                        <div class="tooltip">Ganti Tema</div>
+                        <br />
+                    </div>
+                    <div class="tooltip-trigger" id="score-btn" data-tooltip="Skor&nbsp;terbaikmu!">
+                        <i class="fa-solid fa-trophy"></i>
+                        <div class="tooltip">Papan Skor</div>
+                        <br />
+                    </div>
+                    <!-- <div class="tooltip-trigger" id="share-btn">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <div class="tooltip">Menyukai Wordpad? Bagikan pada teman!</div>
+                    </div> -->
+                    <div class="score-display tooltip-trigger" data-tooltip="">
+                        <span><i class="fa-solid fa-circle-dot"></i> <span id="score">0</span></span>
+                        <div class="tooltip"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,10 +140,10 @@
     <div class="footer container">
         <img src="./assets/decorator.png" alt="image decoration of word" />
         <div class="footer__content">
-            Rangkai kata dengan huruf yang disediakan. Harus mengandung huruf utama yang (bagian tengah). Berapa kata yang dapat kamu rangkai?!
+            Rangkai kata dengan huruf yang disediakan. Kata yang disusun harus mengandung huruf utama.
         </div>
         <div id="app-version" class="footer__version">
-            Wordpad v0.48
+            Wordpad v0.51
         </div>
     </div>
 

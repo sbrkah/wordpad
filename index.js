@@ -222,7 +222,15 @@ elm.maximumBtn.onclick = () => {
 };
 
 elm.changeTheme.onclick = () => {
-    document.body.dataset.theme = document.body.dataset.theme == "dark" ? "light" : "dark";
+    if(document.body.dataset.theme == "dark") {
+        document.body.dataset.theme = "light";
+        elm.changeThemeIcon.classList.remove("fa-solid", "fa-moon");
+        elm.changeThemeIcon.classList.add("fa-solid", "fa-sun"); 
+    }else{
+        document.body.dataset.theme = "dark";
+        elm.changeThemeIcon.classList.remove("fa-solid", "fa-sun"); 
+        elm.changeThemeIcon.classList.add("fa-solid", "fa-moon");
+    }
 }
 
 [elm.maximumReverseBtn, elm.minimumBtn].forEach((btn) => {

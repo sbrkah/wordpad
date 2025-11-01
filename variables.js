@@ -30,6 +30,7 @@ export let elm = {
     tooltipTriggers: document.querySelectorAll(".tooltip-trigger"),
     scoreDisplay: document.querySelector(".score-display"),
     changeTheme: document.getElementById("theme-btn"),
+    changeThemeIcon: document.getElementById("theme-btn__icon"),
 }
 
 export let gd = {
@@ -125,13 +126,13 @@ export class recordedPoint {
                     <div class="record-item__point">
                         <i class="fa-solid fa-feather-pointed"></i>
                         <h2 class="scored">${this.point}</h2>
-                    </div>
+                    </div> 
+                    <span class="record-item__date">${stringifyDate(this.date)}</span>
+                </div>
+                <div class="record-item__container">
                     <div class="record-item__word-count">
                         Berhasil menemukan <span class="record-item__word-count--total">${this.wordFound.length}</span> Kata
                     </div>
-                </div>
-                <div class="record-item__game-data">
-                    <span class="record-item__date">${stringifyDate(this.date)}</span>
                     <div class="record-item__letters">
                         <div class="record-item__letter record-item__letter--main">${this.mainLetter.toUpperCase()}</div>
                         ${this.builderLetter.toUpperCase().split("").sort().map((item) => `<div class="record-item__letter">${item}</div>`).join("")}
