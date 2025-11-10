@@ -73,6 +73,7 @@ export let gd = {
     bigSets: await importSets("./hash_1.0.1.array.txt", true),
     smallSets: [],
     localStorageKey: "wordpad-str-00-0.12-record",
+    localStorageKeyTheme: "wordpad-str-00-0.12-theme",
     notifyInterval: 2000,
     pointMultiplier: 1,
     basePoint: [

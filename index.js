@@ -55,6 +55,7 @@ function addTooltipListener() {
 function fnOnLoad() {
     prepLetter();
     loadVariables();
+    loadPreferedTheme();
     addTooltipListener();
     recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
@@ -143,6 +144,40 @@ function updateEnteredWord(updatedWord) {
     elm.enteredWord.innerHTML = gdp.currentWord;
 }
 
+function loadPreferedTheme(){
+    let preferedThemeIsLight = true; 
+    let fromLocal = localStorage.getItem(gd.localStorageKeyTheme);
+    if (!!fromLocal){   // Check null value
+        if (String(fromLocal) == "dark"){
+            preferedThemeIsLight = false;
+        }
+    }
+    else{
+        // Source - https://stackoverflow.com/a // Checking from system prefered theme
+        // Posted by Mark Szabo, modified by community. See post 'Timeline' for change history
+        // Retrieved 2025-11-10, License - CC BY-SA 4.0
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            preferedThemeIsLight = false
+        }
+    }
+
+    setPreferedTheme(!preferedThemeIsLight);
+}
+
+function setPreferedTheme(isDark = false){
+    if(isDark) {
+        document.body.dataset.theme = "dark";
+        elm.changeThemeIcon.classList.remove("fa-sun"); 
+        elm.changeThemeIcon.classList.add("fa-moon");
+        localStorage.setItem(gd.localStorageKeyTheme, "dark")
+    }else{
+        document.body.dataset.theme = "light";
+        elm.changeThemeIcon.classList.remove("fa-moon");
+        elm.changeThemeIcon.classList.add("fa-sun");
+        localStorage.setItem(gd.localStorageKeyTheme, "light")
+    }
+}
+
 elm.shuffleBtn.addEventListener("click", () => {
     shuffleLetter();
 });
@@ -219,13 +254,9 @@ elm.maximumBtn.onclick = () => {
 
 elm.changeTheme.onclick = () => {
     if(document.body.dataset.theme == "dark") {
-        document.body.dataset.theme = "light";
-        elm.changeThemeIcon.classList.remove("fa-solid", "fa-moon");
-        elm.changeThemeIcon.classList.add("fa-solid", "fa-sun"); 
+        setPreferedTheme(false);
     }else{
-        document.body.dataset.theme = "dark";
-        elm.changeThemeIcon.classList.remove("fa-solid", "fa-sun"); 
-        elm.changeThemeIcon.classList.add("fa-solid", "fa-moon");
+        setPreferedTheme(true);
     }
 }
 
@@ -235,5 +266,15 @@ elm.changeTheme.onclick = () => {
         elm.maximumReverseBtn.style.zIndex = 1;
     }
 });
+
+// Source - https://stackoverflow.com/a // Watch for theme changes from user device
+// Posted by Mark Szabo, modified by community. See post 'Timeline' for change history
+// Retrieved 2025-11-10, License - CC BY-SA 4.0
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    const newColorScheme = event.matches ? "dark" : "light";
+    setPreferedTheme(newColorScheme == "dark")
+});
+
 
 fnOnLoad();
