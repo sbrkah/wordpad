@@ -68,7 +68,7 @@ function updatePoint(point, firstLoad = false) {
     gdp.point += point;
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
 
-    elm.progressBar.style.width = `${(gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100}%`;
+    elm.progressBar.style.width = `${Math.min(100, (gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100)}%`;
     
     if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
