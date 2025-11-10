@@ -73,10 +73,8 @@ export let gd = {
     bigSets: await importSets("./hash_1.0.1.array.txt", true),
     smallSets: [],
     localStorageKey: "wordpad-str-00-0.12-record",
-    localStorageKeyTheme: "wordpad-str-00-0.12-theme",
     notifyInterval: 2000,
     pointMultiplier: 1,
-    optimal: 120,
     basePoint: [
         22,
         38,
@@ -87,7 +85,6 @@ export let gd = {
     pointEachLevel: [],
     mainLetter: "P",
     builderLetter: "ANKLRIG",
-    finished: false,
 }
 
 export let gdp = {
@@ -97,8 +94,6 @@ export let gdp = {
 }
 
 Object.assign(gd, await fetch(url).then(res => res.json()));
-const calcp = (dec) => { return Math.floor(Math.max(gd.optimal/2.6, 128) * dec) };
-gd.basePoint = [calcp(0.2), calcp(0.32), calcp(0.46), calcp(0.65), calcp(1)];
 gd.pointEachLevel = gd.basePoint.map((item) => item * gd.pointMultiplier);
 
 const allowedLetters = [gd.mainLetter, ...gd.builderLetter.split("")];
@@ -187,5 +182,3 @@ export class recordedPoint {
         }
     }
 }
-
-gd.finished = true;
