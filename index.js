@@ -18,20 +18,16 @@ function loadVariables() {
         decorator.innerHTML = gd.levelDecorator[0];
     });
 
-    // Currently no-use, element hidden
-    // elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-    //     return `
-    //     <div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0}&nbsp;poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}">
-    //         <div class="tooltip">${gd.basePoint[index - 1]}&nbsp;poin</div>
-    //     </div>`;
-    // }).join("");
+    let baseRev = gd.basePoint.reverse();
+    let decoRev = gd.levelDecorator.reverse();
+    let levelRev = gd.levelList.reverse();
 
-    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(gd.basePoint).map((point, index) => {
+    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(baseRev).map((point, index) => {
         return `
             <div>
-                ${point}&nbsp;Poin&nbsp;:&nbsp;${gd.levelDecorator[index + 1]}&nbsp;${gd.levelList[index + 1]}
+                ${point}&nbsp;Poin&nbsp;:&nbsp;${decoRev[index]}&nbsp;${levelRev[index]}
             </div>`;
-    }).join("")
+    }).join("");
 
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
 }
