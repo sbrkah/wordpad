@@ -18,20 +18,16 @@ function loadVariables() {
         decorator.innerHTML = gd.levelDecorator[0];
     });
 
-    // Currently no-use, element hidden
-    // elm.progressTrackDots.innerHTML = gd.levelList.map((level, index) => {
-    //     return `
-    //     <div data-tooltip="${index !== 0 ? gd.basePoint[index-1] : 0}&nbsp;poin" class="progress-dot ${index == 0 ? 'progress-dot--active' : 'tooltip-trigger'}" id="level-${index}">
-    //         <div class="tooltip">${gd.basePoint[index - 1]}&nbsp;poin</div>
-    //     </div>`;
-    // }).join("");
+    let baseRev = [...gd.basePoint].reverse();
+    let decoRev = [...gd.levelDecorator].reverse();
+    let levelRev = [...gd.levelList].reverse();
 
-    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(gd.basePoint).map((point, index) => {
+    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(baseRev).map((point, index) => {
         return `
             <div>
-                ${point}&nbsp;Poin&nbsp;:&nbsp;${gd.levelDecorator[index + 1]}&nbsp;${gd.levelList[index + 1]}
+                ${point}&nbsp;Poin&nbsp;:&nbsp;${decoRev[index]}&nbsp;${levelRev[index]}
             </div>`;
-    }).join("")
+    }).join("");
 
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
 }
@@ -59,6 +55,7 @@ function addTooltipListener() {
 function fnOnLoad() {
     prepLetter();
     loadVariables();
+    loadPreferedTheme();
     addTooltipListener();
     recordedPoint.loadLocalStorage(updatePoint, updateCorrectList);
 
@@ -71,11 +68,11 @@ function updatePoint(point, firstLoad = false) {
     gdp.point += point;
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
 
-    elm.progressBar.style.width = `${(gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100}%`;
-    
+    elm.progressBar.style.width = `${Math.min(100, (gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100)}%`;
+    console.log("CCOCOCO", gd.basePoint, _lvlIndex, elm.levelName.innerHTML != gd.levelList[-1])
     if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-
+        console.log("UP")
         // Currently no-use, element hidden
         // document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
@@ -145,6 +142,40 @@ function handleNumpad(event) {
 function updateEnteredWord(updatedWord) {
     gdp.currentWord = updatedWord;
     elm.enteredWord.innerHTML = gdp.currentWord;
+}
+
+function loadPreferedTheme(){
+    let preferedThemeIsLight = true; 
+    let fromLocal = localStorage.getItem(gd.localStorageKeyTheme);
+    if (!!fromLocal){   // Check null value
+        if (String(fromLocal) == "dark"){
+            preferedThemeIsLight = false;
+        }
+    }
+    else{
+        // Source - https://stackoverflow.com/a // Checking from system prefered theme
+        // Posted by Mark Szabo, modified by community. See post 'Timeline' for change history
+        // Retrieved 2025-11-10, License - CC BY-SA 4.0
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            preferedThemeIsLight = false
+        }
+    }
+
+    setPreferedTheme(!preferedThemeIsLight);
+}
+
+function setPreferedTheme(isDark = false){
+    if(isDark) {
+        document.body.dataset.theme = "dark";
+        elm.changeThemeIcon.classList.remove("fa-sun"); 
+        elm.changeThemeIcon.classList.add("fa-moon");
+        localStorage.setItem(gd.localStorageKeyTheme, "dark")
+    }else{
+        document.body.dataset.theme = "light";
+        elm.changeThemeIcon.classList.remove("fa-moon");
+        elm.changeThemeIcon.classList.add("fa-sun");
+        localStorage.setItem(gd.localStorageKeyTheme, "light")
+    }
 }
 
 elm.shuffleBtn.addEventListener("click", () => {
@@ -223,13 +254,9 @@ elm.maximumBtn.onclick = () => {
 
 elm.changeTheme.onclick = () => {
     if(document.body.dataset.theme == "dark") {
-        document.body.dataset.theme = "light";
-        elm.changeThemeIcon.classList.remove("fa-solid", "fa-moon");
-        elm.changeThemeIcon.classList.add("fa-solid", "fa-sun"); 
+        setPreferedTheme(false);
     }else{
-        document.body.dataset.theme = "dark";
-        elm.changeThemeIcon.classList.remove("fa-solid", "fa-sun"); 
-        elm.changeThemeIcon.classList.add("fa-solid", "fa-moon");
+        setPreferedTheme(true);
     }
 }
 
@@ -239,5 +266,15 @@ elm.changeTheme.onclick = () => {
         elm.maximumReverseBtn.style.zIndex = 1;
     }
 });
+
+// Source - https://stackoverflow.com/a // Watch for theme changes from user device
+// Posted by Mark Szabo, modified by community. See post 'Timeline' for change history
+// Retrieved 2025-11-10, License - CC BY-SA 4.0
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    const newColorScheme = event.matches ? "dark" : "light";
+    setPreferedTheme(newColorScheme == "dark")
+});
+
 
 fnOnLoad();
