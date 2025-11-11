@@ -22,13 +22,11 @@ function loadVariables() {
     let decoRev = [...gd.levelDecorator].reverse();
     let levelRev = [...gd.levelList].reverse();
 
-    elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(baseRev).map((point, index) => {
-        return `
-            <div>
-                ${point}&nbsp;Poin&nbsp;:&nbsp;${decoRev[index]}&nbsp;${levelRev[index]}
-            </div>`;
-    }).join("");
+    let innerTable = nilia(baseRev).map((point, index) => {
+        return `<tr><td>${point}</td><td>Poin : &nbsp;</td><td>${decoRev[index]}</td><td>&nbsp;${levelRev[index]}</td></tr>`;
+    }).join('');
 
+    elm.scoreDisplay.querySelector(".tooltip").innerHTML =`<table>${innerTable}</table>`;
     elm.tooltipTriggers = document.querySelectorAll(".tooltip-trigger");
 }
 
