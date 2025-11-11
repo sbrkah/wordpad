@@ -18,9 +18,9 @@ function loadVariables() {
         decorator.innerHTML = gd.levelDecorator[0];
     });
 
-    let baseRev = gd.basePoint.reverse();
-    let decoRev = gd.levelDecorator.reverse();
-    let levelRev = gd.levelList.reverse();
+    let baseRev = [...gd.basePoint].reverse();
+    let decoRev = [...gd.levelDecorator].reverse();
+    let levelRev = [...gd.levelList].reverse();
 
     elm.scoreDisplay.querySelector(".tooltip").innerHTML = nilia(baseRev).map((point, index) => {
         return `
@@ -69,10 +69,10 @@ function updatePoint(point, firstLoad = false) {
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
 
     elm.progressBar.style.width = `${Math.min(100, (gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100)}%`;
-    
+    console.log("CCOCOCO", gd.basePoint, _lvlIndex, elm.levelName.innerHTML != gd.levelList[-1])
     if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-
+        console.log("UP")
         // Currently no-use, element hidden
         // document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
