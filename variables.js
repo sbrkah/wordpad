@@ -1,4 +1,4 @@
-import { importSets, stringifyDate } from "./utils.js";
+import { importSets, stringifyDate, findScoreIndex } from "./utils.js";
 
 export const url = "https://sbrkah.github.io/wordpad-be/api/daily-set.json";
 export let elm = {
@@ -122,6 +122,7 @@ export class recordedPoint {
         this.levelName = levelName;
         this.date = new Date(date);
         this.basePoint = basePoint;
+        this.icon = gd.levelDecorator[0];
     }
 
     getComponent() {
@@ -129,7 +130,7 @@ export class recordedPoint {
             <div class="record-item">
                 <div class="record-item__container">
                     <div class="record-item__point">
-                        <i class="fa-solid fa-feather-pointed"></i>
+                        ${(!!this.icon) ? this.icon : gd.levelDecorator[findScoreIndex(this.basePoint, this.point)]}
                         <h2 class="scored">${this.point}</h2>
                     </div> 
                     <span class="record-item__date">${stringifyDate(this.date)}</span>

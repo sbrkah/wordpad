@@ -69,10 +69,10 @@ function updatePoint(point, firstLoad = false) {
     const _lvlIndex = gd.levelList.indexOf(elm.levelName.textContent);
 
     elm.progressBar.style.width = `${Math.min(100, (gdp.point / gd.pointEachLevel[gd.pointEachLevel.length - 1]) * 100)}%`;
-    console.log("CCOCOCO", gd.basePoint, _lvlIndex, elm.levelName.innerHTML != gd.levelList[-1])
+    
     if (gdp.point >= gd.basePoint[_lvlIndex] && elm.levelName.innerHTML != gd.levelList[-1]) {
         elm.levelName.innerHTML = gd.levelList[_lvlIndex + 1];
-        console.log("UP")
+
         // Currently no-use, element hidden
         // document.getElementById(`level-${_lvlIndex + 1}`).classList.add("progress-dot--active");
 
@@ -94,6 +94,7 @@ function updatePoint(point, firstLoad = false) {
         recordedPoint.todayRecord.point = gdp.point;
         recordedPoint.todayRecord.wordFound = gdp.correctWordList;
         recordedPoint.todayRecord.levelName = elm.levelName.innerHTML;
+        recordedPoint.todayRecord.icon = gd.levelDecorator[_lvlIndex];
         recordedPoint.saveToLocalStorage();
     }
 }

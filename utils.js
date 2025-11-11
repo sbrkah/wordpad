@@ -60,3 +60,5 @@ export function nilia(arrayOfInt){
         
     }
 }
+
+export const findScoreIndex = (scores, x) => scores.findIndex(score => score >= x);
