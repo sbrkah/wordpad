@@ -457,7 +457,7 @@ body {
 }
 
 .score-modal__records {
-    margin-top: 18px;
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 7px;
