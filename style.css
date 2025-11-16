@@ -44,6 +44,14 @@
         display: none;
     }
 
+    .header__content {
+        padding: 6px 11px !important;
+    }
+
+    .words-panel{
+        font-size: small;
+    }
+
     .record-item__word-count{
         display: none;
     }
@@ -61,6 +69,14 @@
     
     .tooltip {
         left: -580% !important;
+    }
+
+    .game-area {
+        scale: 0.8;
+    }
+
+    .footer{
+        font-size: 10px;
     }
 }
 
@@ -132,18 +148,13 @@ body {
 .header__actions {
     display: flex;
     gap: 11px;
-    align-items: center;
     justify-content: center;
-    padding-bottom: 3.5px;
+    align-items: center;
 }
 
 .header__brand img {
     width: 30px;
     height: 30px;
-}
-
-.header__actions div {
-    height: 12px;
 }
 
 #theme-btn__icon{
@@ -309,7 +320,8 @@ body {
 
 #toggle-collapse {
     color: var(--color-text);
-    bottom: -9px;
+    bottom: -10px;
+    opacity: 0;
 }
 
 .words-panel__expanded {

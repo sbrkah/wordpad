@@ -1,5 +1,5 @@
 import { elm, gd, gdp, recordedPoint } from "./variables.js";
-import { toCaseSensitive, nilia } from "./utils.js";
+import { toCaseSensitive, nilia, isOnTop } from "./utils.js";
 
 function prepLetter(_builderLetter = gd.builderLetter) {
     let _letterArray = _builderLetter.toUpperCase().split("");
@@ -124,6 +124,17 @@ function updateCorrectList(newWord) {
     gdp.correctWordList.push(newWord);
     elm.correctWordList.insertAdjacentHTML("afterbegin", `<div class="word-item">${newWord}</div>`);
     elm.fullWordContent.insertAdjacentHTML("afterbegin", `<div class="word-item__full-view">${newWord}</div>`);
+
+    // [ AA BB CC N]N => NN is too long for display, changed into '...'
+    let com = [document.querySelector(".words-panel__fade"), document.getElementsByClassName("word-item"), 0, true]
+    if (com[1].length > 0){
+        while(com[3] & com[2] < com[1].length){
+            if (isOnTop(com[0], com[1][com[2]])){
+                com[1][com[2]].textContent = "…"; com[3] = false;
+            }
+            com[2]++;
+        }
+    }
 }
 
 function shuffleLetter() {
